@@ -130,7 +130,7 @@ return [
 
     'options' => [
 
-        'soft_delete' => false,
+        'soft_delete' => true,
 
         'save_schema_file' => true,
 
@@ -144,7 +144,7 @@ return [
 
         'seeder' => false,
 
-        'swagger' => false, // generate swagger for your APIs
+        'swagger' => true, // generate swagger for your APIs
 
         'tests' => false, // generate test cases for your APIs
 
