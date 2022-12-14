@@ -72,21 +72,19 @@
                                     "confirm_password",
                                     "phone_no",
                                     "is_agree_term",
-                                    "is_agree_privacy"
+                                    "is_agree_privacy",
+                                    "position",
+                                    "address",
+                                    "company_name"
                                 ],
                                 "properties": {
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "test pvt ltd"
+                                    },
                                     "name": {
                                         "type": "string",
                                         "example": "test kumar"
-                                    },
-                                    "phone_no": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "email": {
-                                        "type": "email",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -97,6 +95,23 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "PassWord12345"
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Mohali"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
                                     },
                                     "is_agree_term": {
                                         "type": "checbox",
@@ -121,21 +136,19 @@
                                     "confirm_password",
                                     "phone_no",
                                     "is_agree_term",
-                                    "is_agree_privacy"
+                                    "is_agree_privacy",
+                                    "position",
+                                    "address",
+                                    "company_name"
                                 ],
                                 "properties": {
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "test pvt ltd"
+                                    },
                                     "name": {
                                         "type": "string",
                                         "example": "test kumar"
-                                    },
-                                    "phone_no": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "email": {
-                                        "type": "email",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -146,6 +159,23 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "PassWord12345"
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Mohali"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
                                     },
                                     "is_agree_term": {
                                         "type": "checbox",

@@ -64,5 +64,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
         'is_agree_privacy' => 'required',
     ];
 
+    public function employerDetail()
+    {
+        $this->hasOne(EmployerDetail::class,'employer_id','id');
+    }
+
     
 }

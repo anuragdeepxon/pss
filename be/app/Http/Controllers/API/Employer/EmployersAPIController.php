@@ -8,6 +8,7 @@ use App\Repositories\Employer\EmployersRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\Employer\CreateEmployerDetailsAPIRequest;
 use App\Http\Requests\API\Employer\UpdateEmployersAPIRequest;
 use Laravel\Passport\Client as OClient;
 
@@ -76,23 +77,29 @@ class EmployersAPIController extends AppBaseController
      *            mediaType="multipart/form-data",
      *            @OA\Schema(
      *               type="object",
-     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address","company_name"},
+     *                @OA\Property(property="company_name", type="string", example="test pvt ltd"),
      *                @OA\Property(property="name", type="string", example="test kumar"),
-     *                @OA\Property(property="phone_no", type="string", example="378378373"),
-     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="position", type="string", example="378378373"),
+     *                @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="address", type="string",  example="Mohali"),
+     *                @OA\Property(property="phone_no", type="string", example="378378373"),
      *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
      *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
      *               )
      *        ),
      *        @OA\JsonContent(
-     *               required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address","company_name"}, 
+     *                @OA\Property(property="company_name", type="string", example="test pvt ltd"),
      *                @OA\Property(property="name", type="string", example="test kumar"),
-     *                @OA\Property(property="phone_no", type="string", example="378378373"),
-     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="position", type="string", example="378378373"),
+     *                @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="address", type="string",  example="Mohali"),
+     *                @OA\Property(property="phone_no", type="string", example="378378373"),
      *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
      *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
      *         ),
