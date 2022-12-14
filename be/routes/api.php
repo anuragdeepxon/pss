@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Employer\EmployersAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,20 +15,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::resource('employers', App\Http\Controllers\API\EmployersAPIController::class)
-    ->except(['create', 'edit']);
+Route::prefix('employers')->name('employers/')->group(static function() {
+    Route::post('signup',[EmployersAPIController::class,'signupEmployer']);
+    Route::post('login',[EmployersAPIController::class,'login']);
+});
+    
 
-Route::resource('employer/employers', App\Http\Controllers\API\Employer\EmployersAPIController::class)
-    ->except(['create', 'edit'])
-    ->names([
-        'index' => 'employer.employers.index',
-        'store' => 'employer.employers.store',
-        'show' => 'employer.employers.show',
-        'update' => 'employer.employers.update',
-        'destroy' => 'employer.employers.destroy'
-    ]);
+Route::middleware(['auth:candidates-api'])->group(function () {
+        
+    Route::middleware(['candidate'])->group(function () {
+    });
+
+
+});
+Route::middleware(['auth:employers-api'])->group(function () {
+    Route::middleware(['employer'])->group(function () {
+        
+    });
+});

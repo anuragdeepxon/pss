@@ -40,6 +40,22 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [ 
+            'driver' => 'passport', 
+            'provider' => 'user', 
+        ], 
+        'employers-api' => [ 
+            'driver' => 'passport', 
+            'provider' => 'employers', 
+        ], 
+        'employers-api' => [
+            'driver' => 'session', 
+           'provider' => 'employers', 
+        ],
+        'candidates-api' => [ 
+            'driver' => 'passport', 
+            'provider' => 'candidates', 
+        ], 
     ],
 
     /*
@@ -63,6 +79,14 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'employers' => [
+            'driver' => 'eloquent',
+            'model'   => App\Models\Employer\Employers::class
+        ],
+        'candidates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employer\Employers::class,
         ],
 
         // 'users' => [

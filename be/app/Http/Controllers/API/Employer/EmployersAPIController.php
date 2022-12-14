@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Employer\UpdateEmployersAPIRequest;
+use Laravel\Passport\Client as OClient;
 
 /**
  * Class EmployersController
@@ -64,13 +65,37 @@ class EmployersAPIController extends AppBaseController
 
     /**
      * @OA\Post(
-     *      path="/employers",
+     *      path="/employers/signup",
      *      summary="createEmployers",
      *      tags={"Employers"},
      *      description="Create Employers",
      *      @OA\RequestBody(
      *        required=true,
-     *        @OA\JsonContent(ref="#/components/schemas/Employers")
+     *        description="Pass user credentials",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                @OA\Property(property="name", type="string", example="test kumar"),
+     *                @OA\Property(property="phone_no", type="string", example="378378373"),
+     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
+     *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
+     *               )
+     *        ),
+     *        @OA\JsonContent(
+     *               required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                @OA\Property(property="name", type="string", example="test kumar"),
+     *                @OA\Property(property="phone_no", type="string", example="378378373"),
+     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
+     *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
+     *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
+     *         ),
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -93,15 +118,60 @@ class EmployersAPIController extends AppBaseController
      *      )
      * )
      */
-    public function store(CreateEmployersAPIRequest $request): JsonResponse
+    public function signupEmployer(CreateEmployersAPIRequest $request): JsonResponse
     {
-        $input = $request->all();
-
-        $employers = $this->employersRepository->create($input);
-
-        return $this->sendResponse($employers->toArray(), 'Employers saved successfully');
+       return $this->employersRepository->signup($request);
     }
-
+    
+    /**
+     * @OA\Post(
+     *      path="/employers/login",
+     *      summary="loginEmployers",
+     *      tags={"Employers"},
+     *      description="Login Employers",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        description="Pass user credentials",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email","password"},
+     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *            )
+     *        ),
+     *        @OA\JsonContent(
+     *          required={"email","password"},
+     *          @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *          @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *        ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Employers"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function login(Request $request)
+    {
+       return $this->employersRepository->login($request,'employers-api');
+    }
     /**
      * @OA\Get(
      *      path="/employers/{id}",

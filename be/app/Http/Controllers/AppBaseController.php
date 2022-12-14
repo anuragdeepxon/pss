@@ -4,15 +4,34 @@ namespace App\Http\Controllers;
 
 use InfyOm\Generator\Utils\ResponseUtil;
 
+ 
 /**
- * @OA\Server(url="/api")
- * @OA\Info(
- *   title="InfyOm Laravel Generator APIs",
- *   version="1.0.0"
- * )
- * This class should be parent class for other API controllers
- * Class AppBaseController
- */
+* @OA\Swagger(
+*   basePath="/api",
+*   @OA\Info(
+*     title="PSS APIs",
+*     version="1.0.0",
+*   )
+* )
+*  @OA\Server(
+*      url=API_LOCAL_HOST,
+*      description="LOCAL API Server"
+* ),
+*  @OA\Server(
+*      url=API_LIVE_HOST,
+*      description="LIVE API Server"
+* ),
+*   @OA\SecurityScheme(
+*      securityScheme="bearerAuth",
+*      in="header",
+*      name="bearerAuth",
+*      type="http",
+*      scheme="bearer",
+*      bearerFormat="Passport",
+* ),
+* This class should be parent class for other API controllers
+* Class AppBaseController
+*/
 class AppBaseController extends Controller
 {
     public function sendResponse($result, $message)

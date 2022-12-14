@@ -2,11 +2,15 @@
 
 namespace App\Repositories;
 
+use Exception;
 use Illuminate\Container\Container as Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use InfyOm\Generator\Utils\ResponseUtil;
 
 abstract class BaseRepository
 {
@@ -69,7 +73,7 @@ abstract class BaseRepository
         $query = $this->model->newQuery();
 
         if (count($search)) {
-            foreach($search as $key => $value) {
+            foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
                     $query->where($key, $value);
                 }
@@ -102,6 +106,10 @@ abstract class BaseRepository
      */
     public function create(array $input): Model
     {
+        if (array_key_exists("password", $input)) {
+            $input['password'] = Hash::make($input['password']);
+        }
+
         $model = $this->model->newInstance($input);
 
         $model->save();
@@ -151,5 +159,56 @@ abstract class BaseRepository
         $model = $query->findOrFail($id);
 
         return $model->delete();
+    }
+
+    public function sendResponse($result, $message, $statusCode)
+    {
+        $result['statusCode'] = $statusCode;
+        return response()->json(ResponseUtil::makeResponse($message, $result));
+    }
+
+    public function login($request)
+    {
+
+        $user = $this->model->where(['email' => $request->email])->first();
+        $guard = $this->model->guard;
+        $result = [];
+        if (!$user) {
+            return $this->sendResponse($result, $this->model->message['not_exist'], 401);
+        } elseif (!Hash::check($request->password, $user->password)) {
+            return $this->sendResponse($result, $this->model->message['wrong_password'], 401);
+        }
+
+        if ($user) {
+            $user = Auth::guard("$guard")->attempt(['email' => $request->email, 'password' => $request->password]);
+
+            if ($user) {
+
+                $loginuser = Auth::guard("$guard")->user();
+
+                $getToken = $loginuser->createToken('API Token')->accessToken;
+
+                $loginuser['userToken'] = $getToken;
+
+                return $this->sendResponse($loginuser, $this->model->message['login'], 200);
+            }
+        } else {
+            return $this->sendResponse($result, 'something went wrong', 500);
+        }
+    }
+
+    public function signup($request)
+    {
+        $input = $request->all();
+        $users = $this->create($input);
+
+        if ($users) {
+            $token = $users->createToken('API Token')->accessToken;
+            $users['userToken'] = $token;
+            $users['classType'] = get_class($users);
+            return $this->sendResponse($users, $this->model->message['signup'], 200);
+        } else {
+            return $this->sendResponse($users, 'User not signup succesfully', 500);
+        }
     }
 }

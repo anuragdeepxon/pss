@@ -1,12 +1,17 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "InfyOm Laravel Generator APIs",
+        "title": "PSS APIs",
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "/api"
+            "url": "http://127.0.0.1:8000/api/",
+            "description": "LOCAL API Server"
+        },
+        {
+            "url": "https://reelkidsapiqa.essentialdemo.com/api",
+            "description": "LIVE API Server"
         }
     ],
     "paths": {
@@ -44,20 +49,197 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/employers/signup": {
             "post": {
                 "tags": [
                     "Employers"
                 ],
                 "summary": "createEmployers",
                 "description": "Create Employers",
-                "operationId": "a09466bfc3aceeff478801e5acf322be",
+                "operationId": "cb42dd4f7d984c465f4bdf32e040259b",
                 "requestBody": {
+                    "description": "Pass user credentials",
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "test kumar"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Employers"
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "test kumar"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employers"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employers/login": {
+            "post": {
+                "tags": [
+                    "Employers"
+                ],
+                "summary": "loginEmployers",
+                "description": "Login Employers",
+                "operationId": "681d965ef7b57f20d601e725da15e6aa",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -247,6 +429,15 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "Passport",
+                "scheme": "bearer"
             }
         }
     }
