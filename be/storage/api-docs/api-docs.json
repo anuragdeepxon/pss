@@ -74,8 +74,7 @@
                                     "is_agree_term",
                                     "is_agree_privacy",
                                     "position",
-                                    "address",
-                                    "company_name"
+                                    "address"
                                 ],
                                 "properties": {
                                     "company_name": {

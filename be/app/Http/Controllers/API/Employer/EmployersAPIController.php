@@ -77,7 +77,7 @@ class EmployersAPIController extends AppBaseController
      *            mediaType="multipart/form-data",
      *            @OA\Schema(
      *               type="object",
-     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address","company_name"},
+     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address"},
      *                @OA\Property(property="company_name", type="string", example="test pvt ltd"),
      *                @OA\Property(property="name", type="string", example="test kumar"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
