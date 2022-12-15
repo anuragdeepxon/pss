@@ -8,9 +8,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use InfyOm\Generator\Utils\ResponseUtil;
+use Laravel\Passport\Client as OClient;
 
 abstract class BaseRepository
 {
@@ -167,28 +169,81 @@ abstract class BaseRepository
         return response()->json(ResponseUtil::makeResponse($message, $result));
     }
 
+    public function getTokenAndRefreshToken(OClient $oClient, $email, $password)
+    {
+
+        $data =
+            [
+                'grant_type' => 'password',
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'username' => $email,
+                'password' => $password,
+                'scope' => '*',
+            ];
+
+        $request = Request::create('/oauth/token', 'POST', $data);
+
+        $response = json_decode(app()->handle($request)->getContent());
+
+        return $response;
+    }
+
+
+    public function signup($request)
+    {
+        $input = $request->all();
+        $users = $this->create($input);
+
+        if ($users) {
+            // $token = $users->createToken('API Token')->accessToken;
+            // $users['userToken'] = $token;
+            $users['classType'] = get_class($users);
+            return $this->sendResponse($users, $this->model->message['signup'], 200);
+        } else {
+            return $this->sendResponse($users, 'User not signup succesfully', 500);
+        }
+    }
+
+    
     public function login($request)
     {
 
-        $user = $this->model->where(['email' => $request->email])->first();
-        $guard = $this->model->guard;
+        $findUser = $this->model->where(['email' => $request->email])->first();
+        $guard = $this->model->sessionGuard;
+        $provider = $this->model->provider;
         $result = [];
-        if (!$user) {
+
+        if (!$findUser) {
             return $this->sendResponse($result, $this->model->message['not_exist'], 401);
-        } elseif (!Hash::check($request->password, $user->password)) {
+        } elseif (!Hash::check($request->password, $findUser->password)) {
             return $this->sendResponse($result, $this->model->message['wrong_password'], 401);
         }
 
-        if ($user) {
-            $user = Auth::guard("$guard")->attempt(['email' => $request->email, 'password' => $request->password]);
+        if ($findUser) {
 
-            if ($user) {
+            $userAttempt = Auth::guard($guard)->attempt(['email' => $request->email, 'password' => $request->password]);
 
-                $loginuser = Auth::guard("$guard")->user();
+            // config(['auth.guards.api.provider' => 'user']);
 
-                $getToken = $loginuser->createToken('API Token')->accessToken;
+            if ($userAttempt) {
 
-                $loginuser['userToken'] = $getToken;
+                $loginuser = Auth::guard($guard)->user();
+                $token = Auth::guard($guard)->user()->createToken('API TOKEN')->accessToken;
+
+                $loginuser['token'] = $token;
+
+                /*$oClient = Oclient::where([['password_client', '=', 1], ['provider', $provider]])->first();
+
+                $getToken = $this->getTokenAndRefreshToken($oClient, $loginuser->email, $request->password);
+
+                $loginuser->token_type = $getToken->token_type;
+
+                $loginuser->expires_in = $getToken->expires_in;
+
+                $loginuser->access_token  =  $getToken->access_token;
+
+                $loginuser->refresh_token = $getToken->refresh_token;*/
 
                 return $this->sendResponse($loginuser, $this->model->message['login'], 200);
             }
@@ -197,18 +252,15 @@ abstract class BaseRepository
         }
     }
 
-    public function signup($request)
+    public function logout(Request $request)
     {
-        $input = $request->all();
-        $users = $this->create($input);
-
-        if ($users) {
-            $token = $users->createToken('API Token')->accessToken;
-            $users['userToken'] = $token;
-            $users['classType'] = get_class($users);
-            return $this->sendResponse($users, $this->model->message['signup'], 200);
-        } else {
-            return $this->sendResponse($users, 'User not signup succesfully', 500);
+        try {
+            $guard = $this->model->guard;
+            $user = Auth::guard($guard)->user()->token();
+            $user->revoke();
+            return $this->sendResponse($user, $this->model->message['logout'], 200);
+        } catch (\Exception $e) {
+            return $this->sendResponse([], $e->getMessage(), 500);
         }
     }
 }

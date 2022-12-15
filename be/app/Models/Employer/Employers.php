@@ -4,9 +4,8 @@ namespace App\Models\Employer;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Passport\HasApiTokens as PassportHasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-;
 /**
  * @OA\Schema(
  *      schema="Employers",
@@ -30,15 +29,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * )
  */class Employers extends Authenticatable
 {
-    use SoftDeletes,PassportHasApiTokens;    
+    use SoftDeletes,HasApiTokens;    
      
     public $guard = 'employers-api';
+
+    public $sessionGuard = 'employers';
+
+    public $provider = 'employers';
 
     public $message = [
         'login' => 'Employer login successfully',
         'signup' => 'Employer Signup successfully',
         'not_exist' => 'Employer does not exist',
-        'wrong_password' => 'Password Incorrect'
+        'wrong_password' => 'Password Incorrect',
+        'logout' => 'Logout Successfully'
     ];
 
     public $fillable = [

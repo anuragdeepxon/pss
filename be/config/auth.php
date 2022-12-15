@@ -43,15 +43,19 @@ return [
         'api' => [ 
             'driver' => 'passport', 
             'provider' => 'user', 
-        ], 
+        ],      
+        'employers' => [
+            'driver' => 'session', 
+            'provider' => 'employers', 
+        ],
+        'candidates' => [
+            'driver' => 'session', 
+            'provider' => 'candidates',
+        ],
         'employers-api' => [ 
             'driver' => 'passport', 
             'provider' => 'employers', 
         ], 
-        'employers-api' => [
-            'driver' => 'session', 
-           'provider' => 'employers', 
-        ],
         'candidates-api' => [ 
             'driver' => 'passport', 
             'provider' => 'candidates', 
@@ -86,7 +90,7 @@ return [
         ],
         'candidates' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Employer\Employers::class,
+            'model' =>  App\Models\Candidates\Candidates::class,
         ],
 
         // 'users' => [

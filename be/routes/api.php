@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Candidates\CandidatesAPIController;
 use App\Http\Controllers\API\Employer\EmployersAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,21 +21,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('employers')->name('employers/')->group(static function() {
+
+
+Route::prefix('employers')->group(function () {
+   
     Route::post('signup',[EmployersAPIController::class,'signupEmployer']);
     Route::post('login',[EmployersAPIController::class,'login']);
+    Route::post('logout', [EmployersAPIController::class, 'logout']);
+
+    Route::middleware(['auth:employers-api'])->group(function () {
+        
+    });
 });
+
+Route::prefix('candidates')->group(function () {
     
-
-Route::middleware(['auth:candidates-api'])->group(function () {
+    Route::post('signup',[CandidatesAPIController::class,'signup']);
+    Route::post('login',[CandidatesAPIController::class,'login']);
+    
+    Route::middleware(['auth:candidates-api'])->group(function () {
         
-    Route::middleware(['candidate'])->group(function () {
+        Route::post('logout', [CandidatesAPIController::class, 'logout']);
     });
-
-
+    
+    
 });
-Route::middleware(['auth:employers-api'])->group(function () {
-    Route::middleware(['employer'])->group(function () {
-        
-    });
-});
+

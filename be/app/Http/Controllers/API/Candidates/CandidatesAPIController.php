@@ -1,39 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\API\Employer;
+namespace App\Http\Controllers\API\Candidates;
 
-use App\Http\Requests\API\Employer\CreateEmployersAPIRequest;
-use App\Models\Employer\Employers;
-use App\Repositories\Employer\EmployersRepository;
+use App\Http\Requests\API\Candidates\UpdateCandidatesAPIRequest;
+use App\Models\Candidates\Candidates;
+use App\Repositories\Candidates\CandidatesRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Employer\CreateEmployerDetailsAPIRequest;
-use App\Http\Requests\API\Employer\UpdateEmployersAPIRequest;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\Client as OClient;
+use App\Http\Requests\API\Candidates\CreateCandidatesAPIRequest;
 
 /**
- * Class EmployersController
+ * Class CandidatesController
  */
-
-class EmployersAPIController extends AppBaseController
+class CandidatesAPIController extends AppBaseController
 {
-    private EmployersRepository $employersRepository;
+    private CandidatesRepository $candidatesRepository;
 
-    public function __construct(EmployersRepository $employersRepo)
+    public function __construct(CandidatesRepository $candidatesRepo)
     {
-        $this->middleware('auth:employers-api', ['except' => ['login', 'signupEmployer', 'forgetPassword', 'Resetpassword', 'Multilanguage', 'ExpireforgetPassword', 'ValidateFogotToken']]);
-
-        $this->employersRepository = $employersRepo;
+        $this->candidatesRepository = $candidatesRepo;
     }
 
     /**
      * @OA\Get(
-     *      path="/employers",
-     *      summary="getEmployersList",
-     *      tags={"Employers"},
-     *      description="Get all Employers",
+     *      path="/candidates",
+     *      summary="getCandidatesList",
+     *      tags={"Candidates"},
+     *      description="Get all Candidates",
      *      @OA\Response(
      *          response=200,
      *          description="successful operation",
@@ -46,7 +40,7 @@ class EmployersAPIController extends AppBaseController
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/Employers")
+     *                  @OA\Items(ref="#/components/schemas/Candidates")
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -58,25 +52,64 @@ class EmployersAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $employers = $this->employersRepository->all(
+        $candidates = $this->candidatesRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
 
-        return $this->sendResponse($employers->toArray(), 'Employers retrieved successfully');
+        return $this->sendResponse($candidates->toArray(), 'Candidates retrieved successfully');
     }
 
+    /**
+     * @OA\Post(
+     *      path="/candidates",
+     *      summary="createCandidates",
+     *      tags={"Candidates"},
+     *      description="Create Candidates",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        @OA\JsonContent(ref="#/components/schemas/Candidates")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Candidates"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function store(CreateCandidatesAPIRequest $request): JsonResponse
+    {
+        $input = $request->all();
+
+        $candidates = $this->candidatesRepository->create($input);
+
+        return $this->sendResponse($candidates->toArray(), 'Candidates saved successfully');
+    }
 
     /**
      * @OA\Get(
-     *      path="/employers/{id}",
-     *      summary="getEmployersItem",
-     *      tags={"Employers"},
-     *      description="Get Employers",
+     *      path="/candidates/{id}",
+     *      summary="getCandidatesItem",
+     *      tags={"Candidates"},
+     *      description="Get Candidates",
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of Employers",
+     *          description="id of Candidates",
      *           @OA\Schema(
      *             type="integer"
      *          ),
@@ -94,7 +127,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Candidates"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -106,25 +139,25 @@ class EmployersAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        /** @var Employers $employers */
-        $employers = $this->employersRepository->find($id);
+        /** @var Candidates $candidates */
+        $candidates = $this->candidatesRepository->find($id);
 
-        if (empty($employers)) {
-            return $this->sendError('Employers not found');
+        if (empty($candidates)) {
+            return $this->sendError('Candidates not found');
         }
 
-        return $this->sendResponse($employers->toArray(), 'Employers retrieved successfully');
+        return $this->sendResponse($candidates->toArray(), 'Candidates retrieved successfully');
     }
 
     /**
      * @OA\Put(
-     *      path="/employers/{id}",
-     *      summary="updateEmployers",
-     *      tags={"Employers"},
-     *      description="Update Employers",
+     *      path="/candidates/{id}",
+     *      summary="updateCandidates",
+     *      tags={"Candidates"},
+     *      description="Update Candidates",
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of Employers",
+     *          description="id of Candidates",
      *           @OA\Schema(
      *             type="integer"
      *          ),
@@ -133,7 +166,7 @@ class EmployersAPIController extends AppBaseController
      *      ),
      *      @OA\RequestBody(
      *        required=true,
-     *        @OA\JsonContent(ref="#/components/schemas/Employers")
+     *        @OA\JsonContent(ref="#/components/schemas/Candidates")
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -146,7 +179,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Candidates"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -156,31 +189,31 @@ class EmployersAPIController extends AppBaseController
      *      )
      * )
      */
-    public function update($id, UpdateEmployersAPIRequest $request): JsonResponse
+    public function update($id, UpdateCandidatesAPIRequest $request): JsonResponse
     {
         $input = $request->all();
 
-        /** @var Employers $employers */
-        $employers = $this->employersRepository->find($id);
+        /** @var Candidates $candidates */
+        $candidates = $this->candidatesRepository->find($id);
 
-        if (empty($employers)) {
-            return $this->sendError('Employers not found');
+        if (empty($candidates)) {
+            return $this->sendError('Candidates not found');
         }
 
-        $employers = $this->employersRepository->update($input, $id);
+        $candidates = $this->candidatesRepository->update($input, $id);
 
-        return $this->sendResponse($employers->toArray(), 'Employers updated successfully');
+        return $this->sendResponse($candidates->toArray(), 'Candidates updated successfully');
     }
 
     /**
      * @OA\Delete(
-     *      path="/employers/{id}",
-     *      summary="deleteEmployers",
-     *      tags={"Employers"},
-     *      description="Delete Employers",
+     *      path="/candidates/{id}",
+     *      summary="deleteCandidates",
+     *      tags={"Candidates"},
+     *      description="Delete Candidates",
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of Employers",
+     *          description="id of Candidates",
      *           @OA\Schema(
      *             type="integer"
      *          ),
@@ -210,24 +243,23 @@ class EmployersAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var Employers $employers */
-        $employers = $this->employersRepository->find($id);
+        /** @var Candidates $candidates */
+        $candidates = $this->candidatesRepository->find($id);
 
-        if (empty($employers)) {
-            return $this->sendError('Employers not found');
+        if (empty($candidates)) {
+            return $this->sendError('Candidates not found');
         }
 
-        $employers->delete();
+        $candidates->delete();
 
-        return $this->sendSuccess('Employers deleted successfully');
+        return $this->sendSuccess('Candidates deleted successfully');
     }
-
     /**
      * @OA\Post(
-     *      path="/employers/signup",
-     *      summary="createEmployers",
+     *      path="/candidates/signup",
+     *      summary="createcandidates",
      *      tags={"Auth"},
-     *      description="Create Employers",
+     *      description="Create candidates",
      *      @OA\RequestBody(
      *        required=true,
      *        description="Pass user credentials",
@@ -235,28 +267,24 @@ class EmployersAPIController extends AppBaseController
      *            mediaType="multipart/form-data",
      *            @OA\Schema(
      *               type="object",
-     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address","company_name"},
-     *                @OA\Property(property="company_name", type="string", example="test pvt ltd"),
-     *                @OA\Property(property="name", type="string", example="test kumar"),
+     *                required={"email","password","first_name","last_name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                @OA\Property(property="first_name", type="string", example="test"),
+     *                 @OA\Property(property="last_name", type="string", example="kumar"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
-     *                @OA\Property(property="position", type="string", example="378378373"),
      *                @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
-     *                @OA\Property(property="address", type="string",  example="Mohali"),
      *                @OA\Property(property="phone_no", type="string", example="378378373"),
      *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
      *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
      *               )
      *        ),
      *        @OA\JsonContent(
-     *                required={"email","password","name","confirm_password","phone_no","is_agree_term","is_agree_privacy","position","address","company_name"}, 
-     *                @OA\Property(property="company_name", type="string", example="test pvt ltd"),
-     *                @OA\Property(property="name", type="string", example="test kumar"),
+     *                required={"email","password","first_name","last_name","confirm_password","phone_no","is_agree_term","is_agree_privacy"},
+     *                @OA\Property(property="first_name", type="string", example="test"),
+     *                 @OA\Property(property="last_name", type="string", example="kumar"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *                @OA\Property(property="confirm_password", type="string", format="password", example="PassWord12345"),
-     *                @OA\Property(property="position", type="string", example="378378373"),
      *                @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
-     *                @OA\Property(property="address", type="string",  example="Mohali"),
      *                @OA\Property(property="phone_no", type="string", example="378378373"),
      *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
      *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
@@ -283,17 +311,17 @@ class EmployersAPIController extends AppBaseController
      *      )
      * )
      */
-    public function signupEmployer(CreateEmployersAPIRequest $request): JsonResponse
+    public function signup(CreateCandidatesAPIRequest $request): JsonResponse
     {
-        return $this->employersRepository->signup($request);
+        return $this->candidatesRepository->signup($request);
     }
 
     /**
      * @OA\Post(
-     *      path="/employers/login",
+     *      path="/candidates/login",
      *      summary="Login",
      *      tags={"Auth"},
-     *      description="Login Employers",
+     *      description="Login candidates",
      *      @OA\RequestBody(
      *        required=true,
      *        description="Pass user credentials",
@@ -335,11 +363,12 @@ class EmployersAPIController extends AppBaseController
      */
     public function login(Request $request)
     {
-        return $this->employersRepository->login($request);
+        return $this->candidatesRepository->login($request);
     }
+
     /**
      * @OA\POST(
-     *      path="/employers/logout",
+     *      path="/candidates/logout",
      *      summary="Logout the current user",
      *      tags={"Auth"},
      *      security={
@@ -369,6 +398,6 @@ class EmployersAPIController extends AppBaseController
      */
     public function logout(Request $request)
     {
-        return $this->employersRepository->logout($request);
+        return $this->candidatesRepository->logout($request);
     }
 }

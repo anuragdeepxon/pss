@@ -20,8 +20,8 @@ class Employer
      */
     public function handle(Request $request, Closure $next)
     {
-        
-        if($request->user() && get_class($request->user()) == Employer::class)
+        $user = Auth::guard('employers-api')->user();
+        if($user)
         {
             return $next($request);
         }

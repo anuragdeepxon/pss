@@ -15,6 +15,487 @@
         }
     ],
     "paths": {
+        "/candidates": {
+            "get": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "getCandidatesList",
+                "description": "Get all Candidates",
+                "operationId": "52c4fe0381310ee3c7d16f9065d88e13",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Candidates"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "createCandidates",
+                "description": "Create Candidates",
+                "operationId": "ce71728dfa8ae0e1de63146094814ed5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Candidates"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidates"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/{id}": {
+            "get": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "getCandidatesItem",
+                "description": "Get Candidates",
+                "operationId": "54d221c3da69e71c1ce4332db678ce71",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of Candidates",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidates"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "updateCandidates",
+                "description": "Update Candidates",
+                "operationId": "ed5c12726baa93f7c92f6ee209001be4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of Candidates",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Candidates"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidates"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "deleteCandidates",
+                "description": "Delete Candidates",
+                "operationId": "ba7a620bcf8643185ce6f3df08b9a8d5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of Candidates",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "createcandidates",
+                "description": "Create candidates",
+                "operationId": "35c54170707245df0d73953cf214c3a2",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "first_name",
+                                    "last_name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "test"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "kumar"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "first_name",
+                                    "last_name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "test"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "kumar"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employers"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "description": "Login candidates",
+                "operationId": "0d04d97f57a42707d613bdaaa3f1fa22",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employers"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout the current user",
+                "description": "Logout the current user",
+                "operationId": "31a65cd4ac2684251a8321ae75d3ec37",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/employers": {
             "get": {
                 "tags": [
@@ -38,253 +519,6 @@
                                             "items": {
                                                 "$ref": "#/components/schemas/Employers"
                                             }
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/employers/signup": {
-            "post": {
-                "tags": [
-                    "Employers"
-                ],
-                "summary": "createEmployers",
-                "description": "Create Employers",
-                "operationId": "cb42dd4f7d984c465f4bdf32e040259b",
-                "requestBody": {
-                    "description": "Pass user credentials",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "name",
-                                    "confirm_password",
-                                    "phone_no",
-                                    "is_agree_term",
-                                    "is_agree_privacy",
-                                    "position",
-                                    "address"
-                                ],
-                                "properties": {
-                                    "company_name": {
-                                        "type": "string",
-                                        "example": "test pvt ltd"
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "test kumar"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "confirm_password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "position": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "example": "Mohali"
-                                    },
-                                    "phone_no": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "is_agree_term": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    },
-                                    "is_agree_privacy": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "name",
-                                    "confirm_password",
-                                    "phone_no",
-                                    "is_agree_term",
-                                    "is_agree_privacy",
-                                    "position",
-                                    "address",
-                                    "company_name"
-                                ],
-                                "properties": {
-                                    "company_name": {
-                                        "type": "string",
-                                        "example": "test pvt ltd"
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "test kumar"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "confirm_password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "position": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "example": "Mohali"
-                                    },
-                                    "phone_no": {
-                                        "type": "string",
-                                        "example": "378378373"
-                                    },
-                                    "is_agree_term": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    },
-                                    "is_agree_privacy": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Employers"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/employers/login": {
-            "post": {
-                "tags": [
-                    "Employers"
-                ],
-                "summary": "loginEmployers",
-                "description": "Login Employers",
-                "operationId": "681d965ef7b57f20d601e725da15e6aa",
-                "requestBody": {
-                    "description": "Pass user credentials",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "email",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "email",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Employers"
                                         },
                                         "message": {
                                             "type": "string"
@@ -435,10 +669,316 @@
                     }
                 }
             }
+        },
+        "/employers/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "createEmployers",
+                "description": "Create Employers",
+                "operationId": "cb42dd4f7d984c465f4bdf32e040259b",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy",
+                                    "position",
+                                    "address",
+                                    "company_name"
+                                ],
+                                "properties": {
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "test pvt ltd"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "test kumar"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Mohali"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name",
+                                    "confirm_password",
+                                    "phone_no",
+                                    "is_agree_term",
+                                    "is_agree_privacy",
+                                    "position",
+                                    "address",
+                                    "company_name"
+                                ],
+                                "properties": {
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "test pvt ltd"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "test kumar"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Mohali"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "is_agree_term": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_agree_privacy": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employers"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employers/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "description": "Login Employers",
+                "operationId": "681d965ef7b57f20d601e725da15e6aa",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employers"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employers/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout the current user",
+                "description": "Logout the current user",
+                "operationId": "fb37e974c8596892e0d84330c9b0efca",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
         "schemas": {
+            "Candidates": {
+                "required": [],
+                "properties": {
+                    "created_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Employers": {
                 "required": [],
                 "properties": {
