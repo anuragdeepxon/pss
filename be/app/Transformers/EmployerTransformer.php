@@ -14,7 +14,12 @@ class EmployerTransformer extends TransformerAbstract
     public function transform(Employer $employer): array
     {
         return [
-            'id' => (int) $employer->id,
+            'company_name' => $employer->employerDetail->company_name,
+            'name'   => $employer->name,
+            'position' => $employer->employerDetail->position,
+            'email' => $employer->email,
+            'address' => $employer->employerDetail->address,
+            'phone_no' => $employer->phone_no,
         ];
     }
 }

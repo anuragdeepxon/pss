@@ -5,6 +5,7 @@ namespace App\Repositories\Employer;
 use App\Models\Employer\EmployerDetail;
 use App\Models\Employer\Employer;
 use App\Repositories\BaseRepository;
+use App\Transformers\EmployerTransformer;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,8 @@ class EmployersRepository extends BaseRepository
 
     public function signup($request)
     {
+        $data = [];
+
         DB::beginTransaction();
         try {
             $input = $request->all();
@@ -33,11 +36,11 @@ class EmployersRepository extends BaseRepository
             $employerDetails = EmployerDetail::createDetails($request,$users);
             if ($users) {
                 $token = $users->createToken('API Token')->accessToken;
-                $users['userToken'] = $token;
-                $users['classType'] = get_class($users);
-                $user['employerDetails'] = $employerDetails;
+                $data = (new EmployerTransformer)->transform($users);
+                $data['userToken'] = $token;
+                $data['classType'] = get_class($users);
                 DB::commit();
-                return $this->sendResponse($users, $this->model->message['signup'], 200);
+                return $this->sendResponse($data, $this->model->message['signup'], 200);
             } else {
                 DB::rollBack();
                 return $this->sendResponse($users, 'User not signup succesfully', 500);

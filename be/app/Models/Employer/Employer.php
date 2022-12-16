@@ -70,7 +70,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
     public function employerDetail()
     {
-        $this->hasOne(EmployerDetail::class,'employer_id','id');
+       return $this->hasOne(EmployerDetail::class,'employer_id','id');
     }
 
     
