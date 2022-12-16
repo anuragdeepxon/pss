@@ -21,12 +21,14 @@ use Laravel\Passport\Client as OClient;
 class EmployersAPIController extends AppBaseController
 {
     private EmployersRepository $employersRepository;
+    private EmployerTransformer $employerTransformer;
 
-    public function __construct(EmployersRepository $employersRepo)
+    public function __construct(EmployersRepository $employersRepo,EmployerTransformer $employertranfor)
     {
         $this->middleware('auth:employers-api', ['except' => ['login', 'signupEmployer', 'forgetPassword', 'Resetpassword', 'Multilanguage', 'ExpireforgetPassword', 'ValidateFogotToken']]);
 
         $this->employersRepository = $employersRepo;
+        $this->employerTransformer   = $employertranfor;
     }
 
     /**
@@ -337,8 +339,8 @@ class EmployersAPIController extends AppBaseController
     public function login(Request $request)
     {
         $loginUser = $this->employersRepository->login($request);
-        
-        $data = (new EmployerTransformer)->transform($loginUser['data']);
+
+        $data = $this->employerTransformer->transform($loginUser['data']);
 
         return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
     }
