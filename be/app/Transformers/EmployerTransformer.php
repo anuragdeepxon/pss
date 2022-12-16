@@ -13,7 +13,7 @@ class EmployerTransformer extends TransformerAbstract
      */
     public function transform(Employer $employer): array
     {
-        return [
+        $common = [
             'company_name' => $employer->employerDetail->company_name,
             'name'   => $employer->name,
             'position' => $employer->employerDetail->position,
@@ -21,5 +21,11 @@ class EmployerTransformer extends TransformerAbstract
             'address' => $employer->employerDetail->address,
             'phone_no' => $employer->phone_no,
         ];
+
+        if ( !empty($employer->token)) {
+            $common['token'] = $employer->token;
+        }
+
+        return $common;
     }
 }

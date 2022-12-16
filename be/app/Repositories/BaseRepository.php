@@ -245,7 +245,12 @@ abstract class BaseRepository
 
                 $loginuser->refresh_token = $getToken->refresh_token;*/
 
-                return $this->sendResponse($loginuser, $this->model->message['login'], 200);
+                return [
+                    'data' => $loginuser,
+                    'message' => $this->model->message['login'],
+                    'statusCode' => 200
+                ];
+                // return $this->sendResponse($loginuser, $this->model->message['login'], 200);
             }
         } else {
             return $this->sendResponse($result, 'something went wrong', 500);

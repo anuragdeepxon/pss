@@ -51,4 +51,13 @@ class AppBaseController extends Controller
             'message' => $message
         ], 200);
     }
+
+    public function sendResponseWithStatus($data, $message, $status_code)
+    {
+        return response()->json([
+            'status' => $status_code,
+            'data' => $data,
+            'message' => $message
+        ], $status_code);
+    }
 }

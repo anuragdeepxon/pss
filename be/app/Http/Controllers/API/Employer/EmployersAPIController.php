@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Employer\CreateEmployerDetailsAPIRequest;
 use App\Http\Requests\API\Employer\UpdateEmployersAPIRequest;
+use App\Transformers\EmployerTransformer;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Client as OClient;
 
@@ -335,7 +336,11 @@ class EmployersAPIController extends AppBaseController
      */
     public function login(Request $request)
     {
-        return $this->employersRepository->login($request);
+        $loginUser = $this->employersRepository->login($request);
+        
+        $data = (new EmployerTransformer)->transform($loginUser['data']);
+
+        return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
     }
     /**
      * @OA\POST(

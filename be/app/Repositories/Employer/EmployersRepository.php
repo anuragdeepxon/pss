@@ -35,10 +35,10 @@ class EmployersRepository extends BaseRepository
             $users = $this->create($input);
             $employerDetails = EmployerDetail::createDetails($request,$users);
             if ($users) {
-                $token = $users->createToken('API Token')->accessToken;
-                $data = (new EmployerTransformer)->transform($users);
-                $data['userToken'] = $token;
-                $data['classType'] = get_class($users);
+                // $token = $users->createToken('API Token')->accessToken;
+                // $data['userToken'] = $token;
+                // $data = (new EmployerTransformer)->transform($users);
+                // $data['classType'] = get_class($users);
                 DB::commit();
                 return $this->sendResponse($data, $this->model->message['signup'], 200);
             } else {

@@ -60,7 +60,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
     public static $rules = [
         'email' => 'required|email|unique:employers',
-        'phone_no' => 'required',
+        'phone_no' => 'required|unique:employers',
         'password' => 'required|min:8',
         'name'   => 'required',
         'confirm_password' => 'required|same:password',

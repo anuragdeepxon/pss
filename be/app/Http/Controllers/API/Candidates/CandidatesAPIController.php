@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Candidates\CreateCandidatesAPIRequest;
+use App\Transformers\CandidateTransformer;
 
 /**
  * Class CandidatesController
@@ -16,10 +17,14 @@ use App\Http\Requests\API\Candidates\CreateCandidatesAPIRequest;
 class CandidatesAPIController extends AppBaseController
 {
     private CandidatesRepository $candidatesRepository;
+    private CandidateTransformer $candidateTransformer;
 
-    public function __construct(CandidatesRepository $candidatesRepo)
+    
+
+    public function __construct(CandidatesRepository $candidatesRepo,CandidateTransformer $candidateTransform)
     {
         $this->candidatesRepository = $candidatesRepo;
+        $this->candidateTransformer   = $candidateTransform;
     }
 
     /**
@@ -363,7 +368,11 @@ class CandidatesAPIController extends AppBaseController
      */
     public function login(Request $request)
     {
-        return $this->candidatesRepository->login($request);
+        $loginUser = $this->candidatesRepository->login($request);
+        
+        $data = $this->candidateTransformer->transform($loginUser['data']);
+
+        return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
     }
 
     /**
