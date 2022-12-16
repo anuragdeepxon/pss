@@ -9,7 +9,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @OA\Schema(
- *      schema="Candidates",
+ *      schema="Candidate",
  *      required={},
  *      @OA\Property(
  *          property="created_at",
@@ -28,7 +28,7 @@ use Laravel\Passport\HasApiTokens;
  *          format="date-time"
  *      )
  * )
- */class Candidates extends Authenticatable
+ */class Candidate extends Authenticatable
 {
      use SoftDeletes,HasApiTokens;    
      

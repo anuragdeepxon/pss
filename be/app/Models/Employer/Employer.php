@@ -8,7 +8,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @OA\Schema(
- *      schema="Employers",
+ *      schema="Employer",
  *      required={},
  *      @OA\Property(
  *          property="created_at",
@@ -27,7 +27,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  *          format="date-time"
  *      )
  * )
- */class Employers extends Authenticatable
+ */class Employer extends Authenticatable
 {
     use SoftDeletes,HasApiTokens;    
      

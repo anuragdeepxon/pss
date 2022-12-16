@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Employer;
 
 use App\Http\Requests\API\Employer\CreateEmployersAPIRequest;
-use App\Models\Employer\Employers;
+use App\Models\Employer\Employer;
 use App\Repositories\Employer\EmployersRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -106,7 +106,7 @@ class EmployersAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        /** @var Employers $employers */
+        /** @var Employer $employers */
         $employers = $this->employersRepository->find($id);
 
         if (empty($employers)) {
@@ -160,7 +160,7 @@ class EmployersAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        /** @var Employers $employers */
+        /** @var Employer $employers */
         $employers = $this->employersRepository->find($id);
 
         if (empty($employers)) {
@@ -210,7 +210,7 @@ class EmployersAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var Employers $employers */
+        /** @var Employer $employers */
         $employers = $this->employersRepository->find($id);
 
         if (empty($employers)) {

@@ -86,11 +86,11 @@ return [
         ],
         'employers' => [
             'driver' => 'eloquent',
-            'model'   => App\Models\Employer\Employers::class
+            'model'   => App\Models\Employer\Employer::class
         ],
         'candidates' => [
             'driver' => 'eloquent',
-            'model' =>  App\Models\Candidates\Candidates::class,
+            'model' =>  App\Models\Candidates\Candidate::class,
         ],
 
         // 'users' => [

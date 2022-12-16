@@ -3,7 +3,7 @@
 namespace App\Repositories\Employer;
 
 use App\Models\Employer\EmployerDetail;
-use App\Models\Employer\Employers;
+use App\Models\Employer\Employer;
 use App\Repositories\BaseRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class EmployersRepository extends BaseRepository
 
     public function model(): string
     {
-        return Employers::class;
+        return Employer::class;
     }
 
     public function signup($request)

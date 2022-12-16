@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API\Employer;
 
-use App\Models\Employer\Employers;
+use App\Models\Employer\Employer;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdateEmployersAPIRequest extends APIRequest
@@ -24,7 +24,7 @@ class UpdateEmployersAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Employers::$rules;
+        $rules = Employer::$rules;
         
         return $rules;
     }

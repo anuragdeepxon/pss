@@ -3,7 +3,7 @@
 namespace App\Http\Requests\API\Employer;
 
 use App\Models\Employer\EmployerDetail;
-use App\Models\Employer\Employers;
+use App\Models\Employer\Employer;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreateEmployersAPIRequest extends APIRequest
@@ -27,7 +27,7 @@ class CreateEmployersAPIRequest extends APIRequest
     { 
         return array_merge(
           EmployerDetail::$rules,
-          Employers::$rules
+          Employer::$rules
         );
     }
 }

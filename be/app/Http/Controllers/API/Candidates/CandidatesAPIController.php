@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Candidates;
 
 use App\Http\Requests\API\Candidates\UpdateCandidatesAPIRequest;
-use App\Models\Candidates\Candidates;
+use App\Models\Candidates\Candidate;
 use App\Repositories\Candidates\CandidatesRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -139,7 +139,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        /** @var Candidates $candidates */
+        /** @var Candidate $candidates */
         $candidates = $this->candidatesRepository->find($id);
 
         if (empty($candidates)) {
@@ -193,7 +193,7 @@ class CandidatesAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        /** @var Candidates $candidates */
+        /** @var Candidate $candidates */
         $candidates = $this->candidatesRepository->find($id);
 
         if (empty($candidates)) {
@@ -243,7 +243,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var Candidates $candidates */
+        /** @var Candidate $candidates */
         $candidates = $this->candidatesRepository->find($id);
 
         if (empty($candidates)) {

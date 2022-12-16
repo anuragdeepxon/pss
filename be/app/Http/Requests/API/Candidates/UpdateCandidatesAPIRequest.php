@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API\Candidates;
 
-use App\Models\Candidates\Candidates;
+use App\Models\Candidates\Candidate;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdateCandidatesAPIRequest extends APIRequest
@@ -24,7 +24,7 @@ class UpdateCandidatesAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Candidates::$rules;
+        $rules = Candidate::$rules;
         
         return $rules;
     }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Candidates;
 
-use App\Models\Candidates\Candidates;
+use App\Models\Candidates\Candidate;
 use App\Repositories\BaseRepository;
 
 class CandidatesRepository extends BaseRepository
@@ -18,6 +18,6 @@ class CandidatesRepository extends BaseRepository
 
     public function model(): string
     {
-        return Candidates::class;
+        return Candidate::class;
     }
 }
