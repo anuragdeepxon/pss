@@ -13,6 +13,7 @@ class EmployerTransformer extends TransformerAbstract
      */
     public function transform(Employer $employer): array
     {
+       
         $common = [
             'company_name' => $employer->employerDetail->company_name,
             'name'   => $employer->name,
