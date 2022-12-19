@@ -45,7 +45,7 @@ class CandidatesAPIController extends AppBaseController
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/Candidates")
+     *                  @OA\Items(ref="#/components/schemas/Candidate")
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -74,7 +74,7 @@ class CandidatesAPIController extends AppBaseController
      *      description="Create Candidates",
      *      @OA\RequestBody(
      *        required=true,
-     *        @OA\JsonContent(ref="#/components/schemas/Candidates")
+     *        @OA\JsonContent(ref="#/components/schemas/Candidate")
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -87,7 +87,7 @@ class CandidatesAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Candidates"
+     *                  ref="#/components/schemas/Candidate"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -132,7 +132,7 @@ class CandidatesAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Candidates"
+     *                  ref="#/components/schemas/Candidate"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -171,7 +171,7 @@ class CandidatesAPIController extends AppBaseController
      *      ),
      *      @OA\RequestBody(
      *        required=true,
-     *        @OA\JsonContent(ref="#/components/schemas/Candidates")
+     *        @OA\JsonContent(ref="#/components/schemas/Candidate")
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -184,7 +184,7 @@ class CandidatesAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Candidates"
+     *                  ref="#/components/schemas/Candidate"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -306,7 +306,7 @@ class CandidatesAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Candidate"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -356,7 +356,7 @@ class CandidatesAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Candidate"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -370,7 +370,12 @@ class CandidatesAPIController extends AppBaseController
     {
         $loginUser = $this->candidatesRepository->login($request);
         
-        $data = $this->candidateTransformer->transform($loginUser['data']);
+        if($loginUser['statusCode'] == 200 ){
+
+            $data = $this->candidateTransformer->transform($loginUser['data']);
+        } else {
+            $data  = [];
+        }
 
         return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
     }
@@ -408,5 +413,154 @@ class CandidatesAPIController extends AppBaseController
     public function logout(Request $request)
     {
         return $this->candidatesRepository->logout($request);
+    }
+
+     /**
+     * @OA\Post(
+     *      path="/candidates/forget-password-otp-send",
+     *      summary="forget password otp send first",
+     *      tags={"Auth"},
+     *      description="forget candidates password",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        description="forget candidates password",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email"},
+     *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *            )
+     *        ),
+     *        @OA\JsonContent(
+     *          required={"email"},
+     *          @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
+     *        ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Candidate"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function forgetPasswordOtpSend(Request $request)
+    {
+        return $this->candidatesRepository->forgetPassword($request);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/candidates/otp-verify",
+     *      summary="OTP verify",
+     *      tags={"Auth"},
+     *      description="otp verify",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        description="otp verify",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email","otp"},
+     *                @OA\Property(property="email", type="text", format="text", example="test@text.com"),
+     *                @OA\Property(property="otp", type="text", format="text", example="1234"),         
+     *            )
+     *        ),
+     *        @OA\JsonContent(
+     *            required={"otp"},
+     *            @OA\Property(property="otp", type="text", format="text", example="1234"),
+     *        ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *               @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Candidate"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function otpVerify(Request $request) 
+    {
+        return $this->candidatesRepository->otpVerfiy($request);
+    }
+    
+    /**
+     * @OA\Post(
+     *      path="/candidates/set-new-password",
+     *      summary="password change",
+     *      tags={"Auth"},
+     *      description="password change",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        description="password change",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email","password","confirm_password"},
+     *                @OA\Property(property="email", type="email", format="text", example="text@gmail.com"),
+     *                @OA\Property(property="password", type="text", format="text", example="Admin@1234"),
+     *                @OA\Property(property="confirm_password", type="text", format="text", example="Admin@1234"),         
+     *            )
+     *        ),
+     *        @OA\JsonContent(
+     *           required={"email","password","confirm_password"},
+     *           @OA\Property(property="email", type="email", format="text", example="text@gmail.com"),
+     *           @OA\Property(property="password", type="text", format="text", example="Admin@1234"),
+     *           @OA\Property(property="confirm_password", type="text", format="text", example="Admin@1234"),         
+     *        ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Candidate"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function setNewPassword(Request $request)
+    {
+        return $this->candidatesRepository->setNewPassword($request);
     }
 }

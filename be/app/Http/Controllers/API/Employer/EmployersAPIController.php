@@ -49,7 +49,7 @@ class EmployersAPIController extends AppBaseController
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/Employers")
+     *                  @OA\Items(ref="#/components/schemas/Employer")
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -97,7 +97,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Employer"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -136,7 +136,7 @@ class EmployersAPIController extends AppBaseController
      *      ),
      *      @OA\RequestBody(
      *        required=true,
-     *        @OA\JsonContent(ref="#/components/schemas/Employers")
+     *        @OA\JsonContent(ref="#/components/schemas/Employer")
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -149,7 +149,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Employer"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -276,7 +276,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Employer"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -326,7 +326,7 @@ class EmployersAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/Employers"
+     *                  ref="#/components/schemas/Employer"
      *              ),
      *              @OA\Property(
      *                  property="message",

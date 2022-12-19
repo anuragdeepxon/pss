@@ -12,7 +12,7 @@ class CandidateTransformer extends TransformerAbstract
      * @param \App\Candidate $candidate
      * @return array
      */
-    public function transform(CandidatesCandidate $candidate): array
+    public function transform($candidate): array
     {
         $common = [
             'first_name' => $candidate->first_name,

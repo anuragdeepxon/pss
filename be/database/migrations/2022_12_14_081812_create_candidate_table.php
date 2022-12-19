@@ -24,6 +24,8 @@ return new class extends Migration
             $table->boolean('is_agree_term')->default(0);
             $table->boolean('is_agree_privacy')->default(0);
             $table->integer('status')->default(0);
+            $table->tinyInteger('device_type')->default(0);
+            $table->tinyInteger('device_id')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

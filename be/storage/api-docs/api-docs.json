@@ -36,7 +36,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/Candidates"
+                                                "$ref": "#/components/schemas/Candidate"
                                             }
                                         },
                                         "message": {
@@ -62,7 +62,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Candidates"
+                                "$ref": "#/components/schemas/Candidate"
                             }
                         }
                     }
@@ -78,7 +78,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Candidates"
+                                            "$ref": "#/components/schemas/Candidate"
                                         },
                                         "message": {
                                             "type": "string"
@@ -122,7 +122,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Candidates"
+                                            "$ref": "#/components/schemas/Candidate"
                                         },
                                         "message": {
                                             "type": "string"
@@ -158,7 +158,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Candidates"
+                                "$ref": "#/components/schemas/Candidate"
                             }
                         }
                     }
@@ -174,7 +174,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Candidates"
+                                            "$ref": "#/components/schemas/Candidate"
                                         },
                                         "message": {
                                             "type": "string"
@@ -363,7 +363,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Candidate"
                                         },
                                         "message": {
                                             "type": "string"
@@ -444,7 +444,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Candidate"
                                         },
                                         "message": {
                                             "type": "string"
@@ -496,6 +496,243 @@
                 ]
             }
         },
+        "/candidates/forget-password-otp-send": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "forget password otp send first",
+                "description": "forget candidates password",
+                "operationId": "1f7150b3088f52a344b641905600ed5b",
+                "requestBody": {
+                    "description": "forget candidates password",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/otp-verify": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "OTP verify",
+                "description": "otp verify",
+                "operationId": "006b8a0f41899a7c847f4ffbf2996336",
+                "requestBody": {
+                    "description": "otp verify",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "test@text.com"
+                                    },
+                                    "otp": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "otp": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/candidates/set-new-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "password change",
+                "description": "password change",
+                "operationId": "0bf77a842deeb872327c1a3f48b8c595",
+                "requestBody": {
+                    "description": "password change",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "confirm_password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "text@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "confirm_password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "confirm_password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "text@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "confirm_password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/employers": {
             "get": {
                 "tags": [
@@ -517,7 +754,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/Employers"
+                                                "$ref": "#/components/schemas/Employer"
                                             }
                                         },
                                         "message": {
@@ -562,7 +799,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Employer"
                                         },
                                         "message": {
                                             "type": "string"
@@ -598,7 +835,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Employers"
+                                "$ref": "#/components/schemas/Employer"
                             }
                         }
                     }
@@ -614,7 +851,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Employer"
                                         },
                                         "message": {
                                             "type": "string"
@@ -823,7 +1060,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Employer"
                                         },
                                         "message": {
                                             "type": "string"
@@ -904,7 +1141,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Employers"
+                                            "$ref": "#/components/schemas/Employer"
                                         },
                                         "message": {
                                             "type": "string"
@@ -959,7 +1196,7 @@
     },
     "components": {
         "schemas": {
-            "Candidates": {
+            "Candidate": {
                 "required": [],
                 "properties": {
                     "created_at": {
@@ -979,7 +1216,7 @@
                 },
                 "type": "object"
             },
-            "Employers": {
+            "Employer": {
                 "required": [],
                 "properties": {
                     "created_at": {

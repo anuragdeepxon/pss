@@ -2,6 +2,7 @@
 
 namespace App\Models\Candidates;
 
+use App\Models\ForgetPasswordOtp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,7 +56,8 @@ use Laravel\Passport\HasApiTokens;
          'password',
          'phone_no',
          'is_agree_term',
-         'is_agree_privacy'
+         'is_agree_privacy',
+         'otp'
      ];
  
      protected $casts = [
@@ -72,6 +74,11 @@ use Laravel\Passport\HasApiTokens;
          'is_agree_term' => 'required',
          'is_agree_privacy' => 'required',
      ];
+
+     public function hasOtp()
+     {
+        return $this->hasOne(ForgetPasswordOtp::class,'model_id','id')->where('model_type',self::class);
+     }
 
     
 }

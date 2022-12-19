@@ -2,6 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Mail\ForgetPassword;
+use App\Models\ForgetPasswordOtp;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Container\Container as Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -11,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Laravel\Passport\Client as OClient;
 
@@ -205,35 +209,35 @@ abstract class BaseRepository
         }
     }
 
-    
+
     public function login($request)
     {
+        try {
+            $findUser = $this->model->where(['email' => $request->email])->first();
+            $guard = $this->model->sessionGuard;
+            $provider = $this->model->provider;
+            $result = [];
 
-        $findUser = $this->model->where(['email' => $request->email])->first();
-        $guard = $this->model->sessionGuard;
-        $provider = $this->model->provider;
-        $result = [];
+            if (!$findUser) {
+                return ['data' => $result, 'message' => $this->model->message['not_exist'], 'statusCode' => 401];
+            } elseif (!Hash::check($request->password, $findUser->password)) {
+                return ['data' => $result, 'message' => $this->model->message['wrong_password'], 'statusCode' => 401];
+            }
 
-        if (!$findUser) {
-            return $this->sendResponse($result, $this->model->message['not_exist'], 401);
-        } elseif (!Hash::check($request->password, $findUser->password)) {
-            return $this->sendResponse($result, $this->model->message['wrong_password'], 401);
-        }
 
-        if ($findUser) {
+            if ($findUser) {
+                $userAttempt = Auth::guard($guard)->attempt(['email' => $request->email, 'password' => $request->password]);
 
-            $userAttempt = Auth::guard($guard)->attempt(['email' => $request->email, 'password' => $request->password]);
+                // config(['auth.guards.api.provider' => 'user']);
 
-            // config(['auth.guards.api.provider' => 'user']);
+                if ($userAttempt) {
 
-            if ($userAttempt) {
+                    $loginuser = Auth::guard($guard)->user();
+                    $token = Auth::guard($guard)->user()->createToken('API TOKEN')->accessToken;
 
-                $loginuser = Auth::guard($guard)->user();
-                $token = Auth::guard($guard)->user()->createToken('API TOKEN')->accessToken;
+                    $loginuser['token'] = $token;
 
-                $loginuser['token'] = $token;
-
-                /*$oClient = Oclient::where([['password_client', '=', 1], ['provider', $provider]])->first();
+                    /*$oClient = Oclient::where([['password_client', '=', 1], ['provider', $provider]])->first();
 
                 $getToken = $this->getTokenAndRefreshToken($oClient, $loginuser->email, $request->password);
 
@@ -245,15 +249,18 @@ abstract class BaseRepository
 
                 $loginuser->refresh_token = $getToken->refresh_token;*/
 
-                return [
-                    'data' => $loginuser,
-                    'message' => $this->model->message['login'],
-                    'statusCode' => 200
-                ];
-                // return $this->sendResponse($loginuser, $this->model->message['login'], 200);
+                    return [
+                        'data' => $loginuser,
+                        'message' => $this->model->message['login'],
+                        'statusCode' => 200
+                    ];
+                    // return $this->sendResponse($loginuser, $this->model->message['login'], 200);
+                }
+            } else {
+                return ['data' => $result, 'message' => 'something went wrong', 'statusCode' => 500];
             }
-        } else {
-            return $this->sendResponse($result, 'something went wrong', 500);
+        } catch (Exception $e) {
+            return ['data' => $result, 'message' => $e->getMessage(), 'statusCode' => 500];
         }
     }
 
@@ -263,9 +270,158 @@ abstract class BaseRepository
             $guard = $this->model->guard;
             $user = Auth::guard($guard)->user()->token();
             $user->revoke();
-            return $this->sendResponse($user, $this->model->message['logout'], 200);
+            return ['data'=>$user,'message'=>$this->model->message['logout'],'statusCode'=>200];
         } catch (\Exception $e) {
-            return $this->sendResponse([], $e->getMessage(), 500);
+            return ['data'=>[],'message'=>$e->getMessage(),'statusCode'=>500];
         }
     }
+
+    /**
+     * Send Otp on user eneterd email
+     *
+     * @param [type] $request
+     * @return void
+     */
+    public function forgetPassword($request)
+    {
+        try {
+            $uniqueCode = $this->generateUniqueCode();
+
+            $user = $this->model->where(['email' => $request->email])->first();
+            if ($user) {
+
+                $expireTime = Carbon::now()->addMinutes(5);
+
+                if ($user->hasOtp) {
+                    $data = [
+                        'otp' => $uniqueCode,
+                        'otp_expire_date_time' => $expireTime
+                    ];
+
+                    $otpData = $user->hasOtp->update($data);
+                    $otpData = $user->hasOtp;
+                } else {
+
+                    $data = [
+                        'otp' => $uniqueCode,
+                        'model_id' => $user->id,
+                        'model_type'  => $user::class,
+                        'otp_expire_date_time' => $expireTime
+                    ];
+
+                    $otpData = ForgetPasswordOtp::create($data);
+                }
+
+                // Send email to user
+                Mail::to($user->email)->send(new ForgetPassword($otpData));
+
+                $data = [
+                    'email' => $user->email
+                ];
+
+                return array('message' => __('You will received an otp on your email.'), 'statusCode' => 200, 'data' => $data);
+            } else {
+                return array('message' => __('This Email does not exist'), 'statusCode' => 401, 'data' => '');
+            }
+        } catch (Exception $e) {
+            return ['data' => [], 'message' => $e->getMessage(), 'statusCode' => 500];
+        }
+    }
+    /**
+     * verify the otp 
+     *
+     * @param [type] $request
+     * @return void
+     */
+    public function otpVerfiy($request)
+    {
+        try {
+            $user = $this->model->where(['email' => $request->email])->first();
+            if ($user) {
+                $userOtp = $user->hasOtp;
+                $checkOtpTime = $userOtp->otp_expire_date_time;
+                $currentTime = Carbon::now();
+                if ($currentTime > $checkOtpTime) {
+                    return array('message' => 'Otp have expired', 'statusCode' => 200, 'data' => []);
+                } else {
+                    if ($request->otp == $userOtp->otp) {
+                        $userOtp->update(['is_verify' => 1, 'verify_at' => Carbon::now()]);
+                        return [
+                            'message' => 'Otp verified succesfully',
+                            'statusCode' => 200,
+                            'data' =>     [
+                                'is_verified_otp' => true,
+                                'email' => $user->email
+                            ]
+                        ];
+                    } else {
+                        return [
+                            'message' => 'You have entered wrong otp',
+                            'statusCode' => 200,
+                            'data' =>     [
+                                'is_verified_otp' => false,
+                                'email' => $user->email
+                            ]
+                        ];
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            return array('message' => $e->getMessage(), 'statusCode' => 500, 'data' => []);
+        }
+    }
+
+    /**
+     * Set New Password
+     */
+    public function setNewPassword($request)
+    {
+        try {
+
+            $user = $this->model->where(['email' => $request->email])->first();
+
+            if ($user) {
+                $userOtp = $user->hasOtp;
+                $verify_time_expire = (new Carbon($userOtp->verify_at))->addMinutes(5); // If you have verfiy your otp but do not forget the password so In forget password screen is valid for next 5 minutes after that it give expire error
+                $current_time = Carbon::now();
+                if ( !empty($userOtp) && !empty($userOtp->is_verify) && $current_time < $verify_time_expire) {
+
+                    $password = Hash::make($request->password);
+
+                    $user->update(['password' => $password]);
+                    $userOtp->delete();
+                    return [
+                        'message' => 'Password Change Successfully',
+                        'statusCode' => 200
+                    ];
+                } else {
+                    return [
+                        'message' => 'Your otp verfication time have been expired .please again verify otp',
+                        'statusCode' => 200
+                    ];
+                }
+            } else {
+
+                return [
+                    'message' => 'This Email does not exist',
+                    'statusCode' => 401
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'message' => $e->getMessage(),
+                'statusCode' => 500
+            ];
+        }
+    }
+
+    public function generateUniqueCode()
+    {
+        do {
+            $code = random_int(1000, 9999);
+        } while (ForgetPasswordOtp::where("otp", "=", $code)->first());
+
+        return $code;
+    }
+    
 }

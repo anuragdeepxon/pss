@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Candidates\CandidatesAPIController;
 use App\Http\Controllers\API\Employer\EmployersAPIController;
+use App\Models\Candidates\Candidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,9 +39,11 @@ Route::prefix('candidates')->group(function () {
     
     Route::post('signup',[CandidatesAPIController::class,'signup']);
     Route::post('login',[CandidatesAPIController::class,'login']);
+    Route::post('forget-password-otp-send',[CandidatesAPIController::class,'forgetPasswordOtpSend']);
+    Route::post('otp-verify',[CandidatesAPIController::class,'otpVerify']);
+    Route::post('set-new-password',[CandidatesAPIController::class,'setNewPassword']);
     
-    Route::middleware(['auth:candidates-api'])->group(function () {
-        
+    Route::middleware(['auth:candidates-api'])->group(function () {       
         Route::post('logout', [CandidatesAPIController::class, 'logout']);
     });
     
