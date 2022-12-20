@@ -733,6 +733,452 @@
                 }
             }
         },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Common Auth"
+                ],
+                "summary": "Login",
+                "description": "Login Employers/Candidates",
+                "operationId": "e5af2a6e65de02c74794e8f2fd374730",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/forget-password-otp-send": {
+            "post": {
+                "tags": [
+                    "Common Auth"
+                ],
+                "summary": "forget password otp send first",
+                "description": "forget candidates password",
+                "operationId": "f83214e264cd00d2fb4ae653e0260032",
+                "requestBody": {
+                    "description": "forget candidates password",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/otp-verify": {
+            "post": {
+                "tags": [
+                    "Common Auth"
+                ],
+                "summary": "OTP verify",
+                "description": "otp verify",
+                "operationId": "f3c8b5736a71ed6f8d5d526068c0ead3",
+                "requestBody": {
+                    "description": "otp verify",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "test@text.com"
+                                    },
+                                    "otp": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "1234"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "test@text.com"
+                                    },
+                                    "otp": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "1234"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/set-new-password": {
+            "post": {
+                "tags": [
+                    "Common Auth"
+                ],
+                "summary": "password change",
+                "description": "password change",
+                "operationId": "f8397fd8ff298369c670227c45f5bc2c",
+                "requestBody": {
+                    "description": "password change",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "confirm_password",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "text@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "confirm_password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "confirm_password",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "format": "text",
+                                        "example": "text@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "confirm_password": {
+                                        "type": "text",
+                                        "format": "text",
+                                        "example": "Admin@1234"
+                                    },
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Common Auth"
+                ],
+                "summary": "logout",
+                "description": "logout Employers/Candidates",
+                "operationId": "8e117f5d1c27680cf74efd8050f4f73e",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "user_type": {
+                                        "type": "integer",
+                                        "format": "integer",
+                                        "example": "1=>candidate,2=>employer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Employer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/employers": {
             "get": {
                 "tags": [

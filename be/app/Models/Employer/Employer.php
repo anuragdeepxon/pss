@@ -2,6 +2,7 @@
 
 namespace App\Models\Employer;
 
+use App\Transformers\EmployerTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
@@ -73,5 +74,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
        return $this->hasOne(EmployerDetail::class,'employer_id','id');
     }
 
+    public function tranform($request)
+    {
+       return (new EmployerTransformer)->transform($request);
+    }
     
 }

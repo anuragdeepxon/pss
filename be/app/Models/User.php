@@ -13,6 +13,15 @@ class User extends Authenticatable
     use PassportHasApiTokens, HasFactory, Notifiable;
 
     public $guard = 'users';
+
+    public $message = [
+        'login' => 'Admin User login successfully',
+        'signup' => 'Admin User Signup successfully',
+        'not_exist' => 'Admin User does not exist',
+        'wrong_password' => 'Password Incorrect',
+        'logout' => 'Logout Successfully'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

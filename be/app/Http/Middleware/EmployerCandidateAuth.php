@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
-class Employer
+class EmployerCandidateAuth
 {
     /**
      * Handle an incoming request.
@@ -21,11 +21,12 @@ class Employer
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::guard('employers-api')->user();
-        if($user)
+        $candidate_user = Auth::guard('candidates-api')->user();
+
+        if(($user ) || ($candidate_user))
         {
             return $next($request);
         }
-
-        return response(['error'=> 'Unauthorized Access','message' => 'you can not login with Employer'],403);
+        return response(['error'=> 'Unauthorized Access'],403);
     }
 }

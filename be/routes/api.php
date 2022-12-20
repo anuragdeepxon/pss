@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Candidates\CandidatesAPIController;
+use App\Http\Controllers\API\CommonAuthAPIController;
 use App\Http\Controllers\API\Employer\EmployersAPIController;
 use App\Models\Candidates\Candidate;
 use Illuminate\Http\Request;
@@ -21,7 +22,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('login',[CommonAuthAPIController::class,'login']);
+Route::post('forget-password-otp-send',[CommonAuthAPIController::class,'forgetPasswordOtpSend']);
+Route::post('otp-verify',[CommonAuthAPIController::class,'otpVerify']);
+Route::post('set-new-password',[CommonAuthAPIController::class,'setNewPassword']);
 
+Route::middleware('employer.candidate.auth')->group(function () {
+    Route::post('logout', [CommonAuthAPIController::class, 'logout']);
+       
+});
 
 
 Route::prefix('employers')->group(function () {
