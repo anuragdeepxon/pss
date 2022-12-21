@@ -764,9 +764,9 @@
                                         "example": "PassWord12345"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -791,9 +791,9 @@
                                         "example": "PassWord12345"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -832,10 +832,10 @@
                     "Common Auth"
                 ],
                 "summary": "forget password otp send first",
-                "description": "forget candidates password",
+                "description": "forget Employers/candidates password",
                 "operationId": "f83214e264cd00d2fb4ae653e0260032",
                 "requestBody": {
-                    "description": "forget candidates password",
+                    "description": "forget Employers/candidates password",
                     "required": true,
                     "content": {
                         "multipart/form-data": {
@@ -851,9 +851,9 @@
                                         "example": "user1@mail.com"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -872,9 +872,9 @@
                                         "example": "user1@mail.com"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -938,9 +938,9 @@
                                         "example": "1234"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -965,9 +965,9 @@
                                         "example": "1234"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1037,9 +1037,9 @@
                                         "example": "Admin@1234"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1070,9 +1070,9 @@
                                         "example": "Admin@1234"
                                     },
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1124,9 +1124,9 @@
                                 ],
                                 "properties": {
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1139,9 +1139,9 @@
                                 ],
                                 "properties": {
                                     "user_type": {
+                                        "description": "3=>candidate,2=>employer",
                                         "type": "integer",
-                                        "format": "integer",
-                                        "example": "1=>candidate,2=>employer"
+                                        "format": "integer"
                                     }
                                 },
                                 "type": "object"

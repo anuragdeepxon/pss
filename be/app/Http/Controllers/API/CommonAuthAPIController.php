@@ -50,14 +50,14 @@ class CommonAuthAPIController extends AppBaseController
      *                required={"email","password","user_type"},
      *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *            )
      *        ),
      *        @OA\JsonContent(
      *                required={"email","password","user_type"},
      *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
      *                @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *        ),
      *      ),
      *      @OA\Response(
@@ -91,23 +91,23 @@ class CommonAuthAPIController extends AppBaseController
      *      path="/forget-password-otp-send",
      *      summary="forget password otp send first",
      *      tags={"Common Auth"},
-     *      description="forget candidates password",
+     *      description="forget Employers/candidates password",
      *      @OA\RequestBody(
      *        required=true,
-     *        description="forget candidates password",
+     *        description="forget Employers/candidates password",
      *        @OA\MediaType(
      *            mediaType="multipart/form-data",
      *            @OA\Schema(
      *               type="object",
      *                required={"email","user_type"},
      *                @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *            )
      *        ),
      *        @OA\JsonContent(
      *          required={"email","user_type"},
      *          @OA\Property(property="email", type="email", format="email", example="user1@mail.com"),
-     *          @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *          @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *        ),
      *      ),
      *      @OA\Response(
@@ -154,14 +154,14 @@ class CommonAuthAPIController extends AppBaseController
      *                required={"email","otp","user_type"},
      *                @OA\Property(property="email", type="text", format="text", example="test@text.com"),
      *                @OA\Property(property="otp", type="text", format="text", example="1234"),  
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),       
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),       
      *            )
      *        ),
      *        @OA\JsonContent(
      *                required={"email","otp","user_type"},
      *                @OA\Property(property="email", type="text", format="text", example="test@text.com"),
      *                @OA\Property(property="otp", type="text", format="text", example="1234"),  
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),       
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),       
      *        ),
      *      ),
      *      @OA\Response(
@@ -209,7 +209,7 @@ class CommonAuthAPIController extends AppBaseController
      *                @OA\Property(property="email", type="email", format="text", example="text@gmail.com"),
      *                @OA\Property(property="password", type="text", format="text", example="Admin@1234"),
      *                @OA\Property(property="confirm_password", type="text", format="text", example="Admin@1234"),         
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),       
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),       
      *            )
      *        ),
      *        @OA\JsonContent(
@@ -217,7 +217,7 @@ class CommonAuthAPIController extends AppBaseController
      *           @OA\Property(property="email", type="email", format="text", example="text@gmail.com"),
      *           @OA\Property(property="password", type="text", format="text", example="Admin@1234"),
      *           @OA\Property(property="confirm_password", type="text", format="text", example="Admin@1234"),         
-     *           @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),       
+     *           @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),       
      *        ),
      *      ),
      *      @OA\Response(
@@ -266,12 +266,12 @@ class CommonAuthAPIController extends AppBaseController
      *            @OA\Schema(
      *               type="object",
      *                required={"user_type"},
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *            )
      *        ),
      *        @OA\JsonContent(
      *                required={"user_type"},
-     *                @OA\Property(property="user_type", type="integer", format="integer", example="1=>candidate,2=>employer"),
+     *                @OA\Property(property="user_type", type="integer", format="integer", description="3=>candidate,2=>employer"),
      *        ),
      *      ),
      *      @OA\Response(
