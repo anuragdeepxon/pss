@@ -30,7 +30,6 @@ class CommonAuthAPIController extends AppBaseController
         $resData = !empty($data['data']) ? $data['data'] : [];
         $message = !empty($data['message']) ? $data['message'] : '';
         $code = !empty($data['statusCode']) ? $data['statusCode'] : 404;
-
         return $this->sendResponseWithStatus($resData,$message,$code);
     }
 

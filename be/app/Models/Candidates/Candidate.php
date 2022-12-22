@@ -61,6 +61,10 @@ use Laravel\Passport\HasApiTokens;
          'otp'
      ];
  
+     public $appends =[
+        'full_name'
+     ];
+
      protected $casts = [
          'email_verified_at' => 'datetime',
      ];
@@ -84,6 +88,11 @@ use Laravel\Passport\HasApiTokens;
      public function tranform($request)
      {
         return (new CandidateTransformer)->transform($request);
+     }
+
+     public function getFullNameAttribute()
+     {
+        return $this->first_name." ".$this->last_name;
      }
 
     
