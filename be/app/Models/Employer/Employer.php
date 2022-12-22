@@ -46,6 +46,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
         'logout' => 'Logout Successfully'
     ];
 
+    public $appends = [
+        'full_name'
+    ];
+
     public $fillable = [
         'name',
         'email',
@@ -77,6 +81,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
     public function tranform($request)
     {
        return (new EmployerTransformer)->transform($request);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name;
     }
     
 }

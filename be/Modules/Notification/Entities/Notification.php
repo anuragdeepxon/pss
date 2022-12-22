@@ -3,6 +3,7 @@
 namespace Modules\Notification\Entities;
 
 use App\Models\Candidates\Candidate;
+use App\Models\Employer\Employer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -71,6 +72,11 @@ class Notification extends Model
     {
         return \Modules\Notification\Database\factories\NotificationFactory::new();
     }*/
+    public function sendToUser()
+    {
+       $model = app($this->send_to_model_type);
+       return  $this->hasOne($model::class,'id','send_to');
+    }
 
     public static function createNotification($data)
     {
@@ -85,20 +91,21 @@ class Notification extends Model
 
        $data = self::create($data);
        
+       if( $data->send_to_model_type == User::class) {
+          $userData = Candidate::where('id',$data->send_to)->first();
+       } else {
+          $userData = Employer::where('id',$data->send_to)->first();
+       }
+
        $notification = 
        [
-        'notification'=> $data,
-        'userData' => Candidate::where('id',$data->send_to)->first()
+         'notification'=> $data,
+         'userData' => $userData
        ];
 
        SendMail::dispatch($notification);
     }
 
-    public function candidateUser()
-    {
-       $model = app($this->send_to_model_type);
-       return  $this->hasOne($model::class,'id','send_to');
-    }
 
     
 }
