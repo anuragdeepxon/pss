@@ -8,6 +8,7 @@ use App\Repositories\BaseRepository;
 use App\Transformers\EmployerTransformer;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Modules\Notification\Entities\Notification;
 
 class EmployersRepository extends BaseRepository
 {
@@ -39,6 +40,18 @@ class EmployersRepository extends BaseRepository
                 // $data['userToken'] = $token;
                 // $data = (new EmployerTransformer)->transform($users);
                 // $data['classType'] = get_class($users);
+                $mailTemplate = view('template.welcome',compact('users'))->render();
+                
+                $sendMail = [
+                    'description' => $mailTemplate,
+                    'title' => "Welcome in ".config('app.name') ." family",
+                    'user' => $users,
+                    'send_by' => 1
+                ];
+
+                // Send email to user
+                Notification::createNotification($sendMail);
+
                 DB::commit();
                 return $this->sendResponse($data, $this->model->message['signup'], 200);
             } else {
