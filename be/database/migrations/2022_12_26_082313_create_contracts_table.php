@@ -13,17 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('candidate_details', function (Blueprint $table) {
+           
+        Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->biginteger('candidate_id')->unsigned()->references('id')->on('candidates');
-            $table->string('address');
-            $table->string('regulatory_college');
-            $table->string('regulatory_college_no');
-            $table->string('experience');
-            $table->text('resume')->nullable();
+            $table->uuid()->unique();
+            $table->bigInteger('employer_id')->unsigned();
             $table->timestamps();
+            $table->tinyInteger('status')->default(1);
             $table->softDeletes();
-            $table->index('candidate_id');
+            $table->foreign('employer_id')->references('id')->on('employers'); 
+            $table->index('employer_id');
         });
     }
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('candidate_details');
+        Schema::dropIfExists('contracts');
     }
 };
