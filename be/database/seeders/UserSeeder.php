@@ -24,5 +24,7 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+        $this->command->info("Admin Credential");
+        $this->command->line('Email:admin@orionesolutions.in , password: Admin@123');
     }
 }
