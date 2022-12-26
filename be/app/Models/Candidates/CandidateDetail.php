@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
     public $table = 'candidate_details';
 
     public $fillable = [
+        'candidate_id',
         'address',
         'regulatory_college',
         'regulatory_college_no',
@@ -47,5 +48,9 @@ use Illuminate\Database\Eloquent\Model;
         
     ];
 
+    public function candidate()
+    {
+       return $this->hasOne(Candidate::class,'id','candidate_id');
+    }
     
 }

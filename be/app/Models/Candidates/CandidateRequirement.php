@@ -32,7 +32,8 @@ use Illuminate\Database\Eloquent\Model;
     public $table = 'candidate_requirements';
 
     public $fillable = [
-        'is_tarvel_allowance',
+        'candidate_id',
+        'is_travel_allowance',
         'is_meal_allowance',
         'is_accommodation_allowance',
         'travel_allowance_amount',
@@ -51,6 +52,11 @@ use Illuminate\Database\Eloquent\Model;
     public static $rules = [
         
     ];
+
+    public function candidate()
+    {
+       return $this->hasOne(Candidate::class,'id','candidate_id');
+    }
 
     
 }

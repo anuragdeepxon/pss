@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8001/api/",
+            "url": "http://127.0.0.1:8000/api/",
             "description": "LOCAL API Server"
         },
         {
@@ -246,6 +246,10 @@
                             "schema": {
                                 "required": [
                                     "email",
+                                    "address",
+                                    "regulatory_college",
+                                    "regulatory_college_no",
+                                    "experience",
                                     "password",
                                     "first_name",
                                     "last_name",
@@ -262,6 +266,10 @@
                                     "last_name": {
                                         "type": "string",
                                         "example": "kumar"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "mohali"
                                     },
                                     "password": {
                                         "type": "string",
@@ -282,59 +290,65 @@
                                         "type": "string",
                                         "example": "378378373"
                                     },
-                                    "is_agree_term": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    },
-                                    "is_agree_privacy": {
-                                        "type": "checbox",
-                                        "format": "checbox",
-                                        "example": "0|1"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "first_name",
-                                    "last_name",
-                                    "confirm_password",
-                                    "phone_no",
-                                    "is_agree_term",
-                                    "is_agree_privacy"
-                                ],
-                                "properties": {
-                                    "first_name": {
+                                    "regulatory_college": {
                                         "type": "string",
                                         "example": "test"
                                     },
-                                    "last_name": {
+                                    "regulatory_college_no": {
                                         "type": "string",
                                         "example": "kumar"
                                     },
-                                    "password": {
+                                    "experience": {
                                         "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
+                                        "example": "mohali"
                                     },
-                                    "confirm_password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
+                                    "is_travel_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
                                     },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
+                                    "is_meal_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
                                     },
-                                    "phone_no": {
+                                    "is_accommodation_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "travel_allowance_amount": {
                                         "type": "string",
-                                        "example": "378378373"
+                                        "format": "",
+                                        "example": "120"
+                                    },
+                                    "meal_allowance_amount": {
+                                        "type": "string",
+                                        "format": "",
+                                        "example": "130"
+                                    },
+                                    "accommodation_allowance_amount": {
+                                        "type": "string",
+                                        "format": "",
+                                        "example": "120"
+                                    },
+                                    "rate_type": {
+                                        "description": "Daily=>1,Hourly=>2",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "rate_amount": {
+                                        "description": "Enter the price on the bais of rate type",
+                                        "type": "string",
+                                        "example": "12"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "About yourself"
+                                    },
+                                    "resume": {
+                                        "description": "file to upload",
+                                        "type": "file"
                                     },
                                     "is_agree_term": {
                                         "type": "checbox",
@@ -1643,6 +1657,46 @@
     "components": {
         "schemas": {
             "Candidate": {
+                "required": [],
+                "properties": {
+                    "created_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CandidateDetail": {
+                "required": [],
+                "properties": {
+                    "created_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "description": "",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CandidateRequirement": {
                 "required": [],
                 "properties": {
                     "created_at": {

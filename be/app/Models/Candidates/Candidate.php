@@ -95,5 +95,14 @@ use Laravel\Passport\HasApiTokens;
         return $this->first_name." ".$this->last_name;
      }
 
+     public function candidateRequirement()
+     {
+        return $this->hasOne(CandidateRequirement::class,'candidate_id','id');
+     }
+
+     public function candidateDetail()
+     {
+        return $this->hasOne(CandidateDetail::class,'candidate_id','id');
+     }
     
 }

@@ -91,12 +91,11 @@ class Notification extends Model
 
        $data = self::create($data);
        
-       if( $data->send_to_model_type == User::class) {
+       if( $data->send_to_model_type == Candidate::class) {
           $userData = Candidate::where('id',$data->send_to)->first();
        } else {
           $userData = Employer::where('id',$data->send_to)->first();
        }
-
        $notification = 
        [
          'notification'=> $data,
