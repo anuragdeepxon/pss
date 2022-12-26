@@ -25,6 +25,7 @@ return new class extends Migration
             $table->tinyInteger('rate_type')->default(1);
             $table->float('rate_amount')->nullable();
             $table->longText('notes')->nullable();
+            $table->text('shift_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('candidate_id')->references('id')->on('candidates'); 
