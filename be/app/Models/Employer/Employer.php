@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use OwenIt\Auditing\Auditable as AuditingAuditable;
+use OwenIt\Auditing\Contracts\Auditable;
+
 /**
  * @OA\Schema(
  *      schema="Employer",
@@ -28,9 +31,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  *          format="date-time"
  *      )
  * )
- */class Employer extends Authenticatable
+ */class Employer extends Authenticatable implements Auditable
 {
-    use SoftDeletes,HasApiTokens;    
+    use SoftDeletes,HasApiTokens,AuditingAuditable;    
      
     public $guard = 'employers-api';
 

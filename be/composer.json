@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.3",
         "nwidart/laravel-modules": "^9.0",
+        "owen-it/laravel-auditing": "^13.0",
         "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
