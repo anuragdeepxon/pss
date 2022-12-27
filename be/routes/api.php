@@ -54,6 +54,7 @@ Route::prefix('candidates')->group(function () {
     
     Route::middleware(['auth:candidates-api'])->group(function () {       
         Route::post('logout', [CandidatesAPIController::class, 'logout']);
+        Route::post('edit-profile',[CandidatesAPIController::class,'editProfile']);
     });
     
     

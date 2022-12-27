@@ -288,7 +288,7 @@ class EmployersAPIController extends AppBaseController
      */
     public function signupEmployer(CreateEmployersAPIRequest $request): JsonResponse
     {
-        return $this->employersRepository->signup($request);
+        return $this->sendResponseWithStatus($this->employersRepository->signup($request));
     }
 
     /**
@@ -342,7 +342,7 @@ class EmployersAPIController extends AppBaseController
 
         $data = $this->employerTransformer->transform($loginUser['data']);
 
-        return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
+        return $this->sendResponseWithStatus($data);
     }
     /**
      * @OA\POST(
@@ -376,6 +376,6 @@ class EmployersAPIController extends AppBaseController
      */
     public function logout(Request $request)
     {
-        return $this->employersRepository->logout($request);
+        return $this->sendResponseWithStatus($this->employersRepository->logout($request));
     }
 }

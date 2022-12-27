@@ -222,6 +222,12 @@ class CommonAuthRepository extends BaseRepository
                         'data' =>     []
                     ];
                 }
+            } else {
+                return [
+                    'message' => 'User Not Found',
+                    'statusCode' => 404,
+                    'data' =>     []
+                ];
             }
         } catch (Exception $e) {
             return array('message' => $e->getMessage(), 'statusCode' => 500, 'data' => []);

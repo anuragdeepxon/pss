@@ -346,6 +346,11 @@
                                         "type": "string",
                                         "example": "About yourself"
                                     },
+                                    "shift_type": {
+                                        "description": "Days=>1,Evenings=>2,Nights=>3,Weekends=>4",
+                                        "type": "string",
+                                        "example": "1,2,3,4"
+                                    },
                                     "resume": {
                                         "description": "file to upload",
                                         "type": "file"
@@ -745,6 +750,153 @@
                         }
                     }
                 }
+            }
+        },
+        "/candidates/edit-profile": {
+            "post": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "Edit the profile by candidate",
+                "description": "Edit candidate profile",
+                "operationId": "fc10badaef66948eb36419689f10c4d8",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "address",
+                                    "regulatory_college",
+                                    "regulatory_college_no",
+                                    "experience",
+                                    "first_name",
+                                    "last_name",
+                                    "phone_no"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "test"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "kumar"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "mohali"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "phone_no": {
+                                        "type": "string",
+                                        "example": "378378373"
+                                    },
+                                    "regulatory_college": {
+                                        "type": "string",
+                                        "example": "test"
+                                    },
+                                    "regulatory_college_no": {
+                                        "type": "string",
+                                        "example": "kumar"
+                                    },
+                                    "experience": {
+                                        "type": "string",
+                                        "example": "mohali"
+                                    },
+                                    "is_travel_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_meal_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "is_accommodation_allowance": {
+                                        "type": "checbox",
+                                        "format": "checbox",
+                                        "example": "0|1"
+                                    },
+                                    "travel_allowance_amount": {
+                                        "type": "string",
+                                        "format": "",
+                                        "example": "120"
+                                    },
+                                    "meal_allowance_amount": {
+                                        "type": "string",
+                                        "format": "",
+                                        "example": "130"
+                                    },
+                                    "accommodation_allowance_amount": {
+                                        "type": "string",
+                                        "format": "",
+                                        "example": "120"
+                                    },
+                                    "rate_type": {
+                                        "description": "Daily=>1,Hourly=>2",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "rate_amount": {
+                                        "description": "Enter the price on the bais of rate type",
+                                        "type": "string",
+                                        "example": "12"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "About yourself"
+                                    },
+                                    "shift_type": {
+                                        "description": "Days=>1,Evenings=>2,Nights=>3,Weekends=>4",
+                                        "type": "string",
+                                        "example": "1,2,3,4"
+                                    },
+                                    "resume": {
+                                        "description": "file to upload",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidate"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/login": {

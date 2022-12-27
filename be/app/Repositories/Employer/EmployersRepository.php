@@ -35,33 +35,39 @@ class EmployersRepository extends BaseRepository
             $input = $request->all();
             $users = $this->create($input);
             $employerDetails = EmployerDetail::createDetails($request,$users);
-            if ($users) {
-                // $token = $users->createToken('API Token')->accessToken;
-                // $data['userToken'] = $token;
-                // $data = (new EmployerTransformer)->transform($users);
-                // $data['classType'] = get_class($users);
-                $mailTemplate = view('template.welcome',compact('users'))->render();
-                
-                $sendMail = [
-                    'description' => $mailTemplate,
-                    'title' => "Welcome in ".config('app.name') ." family",
-                    'user' => $users,
-                    'send_by' => 1
-                ];
+            // $token = $users->createToken('API Token')->accessToken;
+            // $data['userToken'] = $token;
+            // $data = (new EmployerTransformer)->transform($users);
+            // $data['classType'] = get_class($users);
+            $mailTemplate = view('template.welcome',compact('users'))->render();
+            
+            $sendMail = [
+                'description' => $mailTemplate,
+                'title' => "Welcome in ".config('app.name') ." family",
+                'user' => $users,
+                'send_by' => 1
+            ];
 
-                // Send email to user
-                Notification::createNotification($sendMail);
+            // Send email to user
+            Notification::createNotification($sendMail);
 
-                DB::commit();
-                return $this->sendResponse($data, $this->model->message['signup'], 200);
-            } else {
-                DB::rollBack();
-                return $this->sendResponse($users, 'User not signup succesfully', 500);
-            }
+            DB::commit();
+
+            return [
+                'data' => $users,
+                'message' => $this->model->message['signup'],
+                'statusCode' => 200
+            ];
         } catch (Exception $e) {
             $users = [];
             DB::rollBack();
-            return $this->sendResponse($users, $e->getMessage(), 500);
+
+            return [
+                'data' => [],
+                'message' => $e->getMessage(),
+                'statusCode' => 500
+            ];
+
         }
     }
 }

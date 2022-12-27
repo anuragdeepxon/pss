@@ -24,15 +24,6 @@ class CommonAuthAPIController extends AppBaseController
     {
         $this->commonAuthRepository = $commonAuthRepo;    
     }
-
-    public function response($data)
-    {
-        $resData = !empty($data['data']) ? $data['data'] : [];
-        $message = !empty($data['message']) ? $data['message'] : '';
-        $code = !empty($data['statusCode']) ? $data['statusCode'] : 404;
-        return $this->sendResponseWithStatus($resData,$message,$code);
-    }
-
     /**
      * @OA\Post(
      *      path="/login",
@@ -83,7 +74,7 @@ class CommonAuthAPIController extends AppBaseController
     public function login(LoginCommonAuthRequest $request)
     {
         $loginUser = $this->commonAuthRepository->login($request);
-        return $this->response($loginUser);
+        return $this->sendResponseWithStatus($loginUser);
     }
  /**
      * @OA\Post(
@@ -133,7 +124,7 @@ class CommonAuthAPIController extends AppBaseController
     public function forgetPasswordOtpSend(ForgetPasswordOtpSendRequest $request)
     {
         $data = $this->commonAuthRepository->forgetPassword($request);   
-        return $this->response($data);
+        return $this->sendResponseWithStatus($data);
 
     }
 
@@ -187,7 +178,7 @@ class CommonAuthAPIController extends AppBaseController
     public function otpVerify(OtpVerifyRequest $request) 
     {
         $data = $this->commonAuthRepository->otpVerfiy($request);
-        return $this->response($data);
+        return $this->sendResponseWithStatus($data);
 
     }
 
@@ -243,7 +234,7 @@ class CommonAuthAPIController extends AppBaseController
     public function setNewPassword(ChangePassword $request)
     {
         $data =  $this->commonAuthRepository->setNewPassword($request);
-        return $this->response($data);
+        return $this->sendResponseWithStatus($data);
 
     }
 
@@ -297,6 +288,6 @@ class CommonAuthAPIController extends AppBaseController
     public function logout(Logout $request)
     {
         $data =  $this->commonAuthRepository->logout($request);
-        return $this->response($data);
+        return $this->sendResponseWithStatus($data);
     }
 }

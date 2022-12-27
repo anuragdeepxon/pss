@@ -32,7 +32,7 @@ class CandidatesRepository extends BaseRepository
         return Candidate::class;
     }
 
-    public function setParms($request)
+    public function setParms($request,$isUpdate=null)
     {
         $input = $request->all();
 
@@ -63,10 +63,15 @@ class CandidatesRepository extends BaseRepository
             'email' => $request->email,
             'phone_no' => $request->phone_no,
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'is_agree_term' => $request->is_agree_term,
-            'is_agree_privacy' => $request->is_agree_privacy
+            'last_name' => $request->last_name
         ];
+
+        if( empty($isUpdate) && !$isUpdate) {
+
+            $candidate['is_agree_term'] = $request->is_agree_term;
+            $candidate['is_agree_privacy'] = $request->is_agree_privacy;
+            $candidate['password'] = $request->password;
+        }
 
         $path = public_path() . '/uploads/images/';
 
@@ -117,16 +122,27 @@ class CandidatesRepository extends BaseRepository
                 CandidateDetail::create($candidateDetails);
 
                 DB::commit();
-
-                return $this->sendResponse($users, $this->model->message['signup'], 200);
+                return [
+                    'data' => $users,
+                    'message' => $this->model->message['signup'],
+                    'statusCode' => 200
+                ];
             } else {
                 DB::rollBack();
-                return $this->sendResponse($users, 'User not signup succesfully', 200);
+                return [
+                    'data' => $users,
+                    'message' =>  'User not signup succesfully',
+                    'statusCode' => 400
+                ];
             }
         } catch (Exception $e) {
 
             DB::rollBack();
-            return $this->sendResponse($users, $e->getMessage(), 500);
+            return [
+                'data' => $users,
+                'message' => $e->getMessage(),
+                'statusCode' => 500
+            ];
         }
     }
 
@@ -134,7 +150,7 @@ class CandidatesRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
-            $params = $this->setParms($request);
+            $params = $this->setParms($request,true);
             // Save data in candidate requirements table 
             $candidateRequirements = $params['candidateRequirements'];
 
@@ -155,15 +171,29 @@ class CandidatesRepository extends BaseRepository
 
                 DB::commit();
 
-                return $this->sendResponse($candidate, $this->model->message['signup'], 200);
+                return [
+                    'data' => $candidate,
+                    'message' => $this->model->message['update'],
+                    'statusCode' => 200
+                ];
             } else {
                 DB::rollBack();
-                return $this->sendResponse($candidate, 'Candidate not update succesfully', 200);
+
+                return [
+                    'data' => [],
+                    'message' =>  'User not updated succesfully',
+                    'statusCode' => 400
+                ];
             }
         } catch (Exception $e) {
 
             DB::rollBack();
-            return $this->sendResponse($candidate, $e->getMessage(), 500);
+
+            return [
+                'data' => [],
+                'message' => $e->getMessage(),
+                'statusCode' => 500
+            ];
         }
     }
 }

@@ -292,6 +292,7 @@ class CandidatesAPIController extends AppBaseController
      *                @OA\Property(property="rate_type", type="integer", example="1" ,description="Daily=>1,Hourly=>2"),
      *                @OA\Property(property="rate_amount", type="string", example="12" ,description="Enter the price on the bais of rate type"),
      *                @OA\Property(property="notes", type="string", example="About yourself"),
+     *                @OA\Property(property="shift_type", type="string", example="1,2,3,4" ,description="Days=>1,Evenings=>2,Nights=>3,Weekends=>4"),
      *                @OA\Property(description="file to upload",property="resume",type="file"),
      *                @OA\Property(property="is_agree_term", type="checbox", format="checbox", example="0|1"),
      *                @OA\Property(property="is_agree_privacy", type="checbox", format="checbox", example="0|1"),
@@ -321,7 +322,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function signup(CreateCandidatesAPIRequest $request): JsonResponse
     {
-        return $this->candidatesRepository->signup($request);
+        return $this->sendResponseWithStatus($this->candidatesRepository->signup($request));
     }
 
     /**
@@ -375,12 +376,10 @@ class CandidatesAPIController extends AppBaseController
         
         if($loginUser['statusCode'] == 200 ){
 
-            $data = $this->candidateTransformer->transform($loginUser['data']);
-        } else {
-            $data  = [];
+            $loginUser['data'] = $this->candidateTransformer->transform($loginUser['data']);
         }
 
-        return $this->sendResponseWithStatus($data,$loginUser['message'],$loginUser['statusCode']);
+        return $this->sendResponseWithStatus($loginUser);
     }
 
     /**
@@ -415,7 +414,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function logout(Request $request)
     {
-        return $this->candidatesRepository->logout($request);
+        return $this->sendResponseWithStatus($this->candidatesRepository->logout($request));
     }
 
      /**
@@ -463,7 +462,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function forgetPasswordOtpSend(Request $request)
     {
-        return $this->candidatesRepository->forgetPassword($request);
+        return $this->sendResponseWithStatus($this->candidatesRepository->forgetPassword($request));
     }
 
     /**
@@ -512,7 +511,7 @@ class CandidatesAPIController extends AppBaseController
      */
     public function otpVerify(Request $request) 
     {
-        return $this->candidatesRepository->otpVerfiy($request);
+        return $this->sendResponseWithStatus($this->candidatesRepository->otpVerfiy($request));
     }
     
     /**
@@ -564,6 +563,71 @@ class CandidatesAPIController extends AppBaseController
      */
     public function setNewPassword(Request $request)
     {
-        return $this->candidatesRepository->setNewPassword($request);
+        return $this->sendResponseWithStatus($this->candidatesRepository->setNewPassword($request));
+    }
+
+     /**
+     * @OA\Post(
+     *      path="/candidates/edit-profile",
+     *      summary="Edit the profile by candidate",
+     *      tags={"Candidates"},
+     *      security={
+     *           {"bearerAuth": {}}
+     *      },
+     *      description="Edit candidate profile",
+     *      @OA\RequestBody(
+     *        required=true,
+     *        description="Pass user credentials",
+     *        @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *                required={"email","address","regulatory_college","regulatory_college_no","experience","first_name","last_name","phone_no"},
+     *                @OA\Property(property="first_name", type="string", example="test"),
+     *                @OA\Property(property="last_name", type="string", example="kumar"),
+     *                @OA\Property(property="address", type="string", example="mohali"),
+     *                @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *                @OA\Property(property="phone_no", type="string", example="378378373"),
+     *                @OA\Property(property="regulatory_college", type="string", example="test"),
+     *                @OA\Property(property="regulatory_college_no", type="string", example="kumar"),
+     *                @OA\Property(property="experience", type="string", example="mohali"),
+     *                @OA\Property(property="is_travel_allowance", type="checbox", format="checbox", example="0|1"),
+     *                @OA\Property(property="is_meal_allowance", type="checbox", format="checbox", example="0|1"),
+     *                @OA\Property(property="is_accommodation_allowance", type="checbox", format="checbox", example="0|1"),
+     *                @OA\Property(property="travel_allowance_amount", type="string", format="", example="120"),
+     *                @OA\Property(property="meal_allowance_amount", type="string", format="", example="130"),
+     *                @OA\Property(property="accommodation_allowance_amount", type="string", format="", example="120"),
+     *                @OA\Property(property="rate_type", type="integer", example="1" ,description="Daily=>1,Hourly=>2"),
+     *                @OA\Property(property="rate_amount", type="string", example="12" ,description="Enter the price on the bais of rate type"),
+     *                @OA\Property(property="notes", type="string", example="About yourself"),
+     *                @OA\Property(property="shift_type", type="string", example="1,2,3,4" ,description="Days=>1,Evenings=>2,Nights=>3,Weekends=>4"),
+     *                @OA\Property(description="file to upload",property="resume",type="file")
+     *               )
+     *        ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Candidate"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function editProfile(Request $request) 
+    {
+        return $this->sendResponseWithStatus($this->candidatesRepository->editProfile($request));
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Laravel\Passport\Client as OClient;
+use Modules\Notification\Entities\Notification;
 
 abstract class BaseRepository
 {
@@ -257,10 +258,10 @@ abstract class BaseRepository
                     // return $this->sendResponse($loginuser, $this->model->message['login'], 200);
                 }
             } else {
-                return ['data' => $result, 'message' => 'something went wrong', 'statusCode' => 500];
+                return ['message' => 'something went wrong', 'statusCode' => 500];
             }
         } catch (Exception $e) {
-            return ['data' => $result, 'message' => $e->getMessage(), 'statusCode' => 500];
+            return ['message' => $e->getMessage(), 'statusCode' => 500];
         }
     }
 
@@ -306,22 +307,38 @@ abstract class BaseRepository
                         'otp' => $uniqueCode,
                         'model_id' => $user->id,
                         'model_type'  => $user::class,
-                        'otp_expire_date_time' => $expireTime
+                        'otp_expire_date_time' => $expireTime,
                     ];
 
                     $otpData = ForgetPasswordOtp::create($data);
                 }
+                $mailTemplate = view('template.forget-password',compact('otpData','user'))->render();
+                
+                $sendMail = [
+                    'description' => $mailTemplate,
+                    'title' => 'Forget Password',
+                    'user' => $user,
+                    'send_by' => 1
+                ];
 
                 // Send email to user
-                Mail::to($user->email)->send(new ForgetPassword($otpData));
+                Notification::createNotification($sendMail);
 
                 $data = [
                     'email' => $user->email
                 ];
 
-                return array('message' => __('You will received an otp on your email.'), 'statusCode' => 200, 'data' => $data);
+                return [
+                    'message' => __('You will received an otp on your email.'), 
+                    'statusCode' => 200, 
+                    'data' => $data
+                ];
             } else {
-                return array('message' => __('This Email does not exist'), 'statusCode' => 401, 'data' => '');
+                return [
+                     'message' => __('This Email does not exist'),
+                     'statusCode' => 401, 
+                     'data' => ''
+                ];
             }
         } catch (Exception $e) {
             return ['data' => [], 'message' => $e->getMessage(), 'statusCode' => 500];
@@ -339,33 +356,50 @@ abstract class BaseRepository
             $user = $this->model->where(['email' => $request->email])->first();
             if ($user) {
                 $userOtp = $user->hasOtp;
-                $checkOtpTime = $userOtp->otp_expire_date_time;
-                $currentTime = Carbon::now();
-                if ($currentTime > $checkOtpTime) {
-                    return array('message' => 'Otp have expired', 'statusCode' => 200, 'data' => []);
-                } else {
-                    if ($request->otp == $userOtp->otp) {
-                        $userOtp->update(['is_verify' => 1, 'verify_at' => Carbon::now()]);
-                        return [
-                            'message' => 'Otp verified succesfully',
-                            'statusCode' => 200,
-                            'data' =>     [
-                                'is_verified_otp' => true,
-                                'email' => $user->email
-                            ]
-                        ];
+
+                if ( !empty($userOtp) ) {
+
+                    $checkOtpTime = $userOtp->otp_expire_date_time;
+                    $currentTime = Carbon::now();
+                    if ($currentTime > $checkOtpTime) {
+                        return array('message' => 'Otp have expired', 'statusCode' => 200, 'data' => []);
                     } else {
-                        return [
-                            'message' => 'You have entered wrong otp',
-                            'statusCode' => 200,
-                            'data' =>     [
-                                'is_verified_otp' => false,
-                                'email' => $user->email
-                            ]
-                        ];
+                        if ($request->otp == $userOtp->otp) {
+                            $userOtp->update(['is_verify' => 1, 'verify_at' => Carbon::now()]);
+                            return [
+                                'message' => 'Otp verified succesfully',
+                                'statusCode' => 200,
+                                'data' =>     [
+                                    'is_verified_otp' => true,
+                                    'email' => $user->email
+                                ]
+                            ];
+                        } else {
+                            return [
+                                'message' => 'You have entered wrong otp',
+                                'statusCode' => 200,
+                                'data' =>     [
+                                    'is_verified_otp' => false,
+                                    'email' => $user->email
+                                ]
+                            ];
+                        }
                     }
+                } else {
+                    return [
+                        'message' => 'OTP not generated yet',
+                        'statusCode' => 200,
+                        'data' =>     []
+                    ];
                 }
+            } else {
+                return [
+                    'message' => 'User Not Found',
+                    'statusCode' => 404,
+                    'data' =>     []
+                ];
             }
+
         } catch (Exception $e) {
             return array('message' => $e->getMessage(), 'statusCode' => 500, 'data' => []);
         }
@@ -379,27 +413,44 @@ abstract class BaseRepository
         try {
 
             $user = $this->model->where(['email' => $request->email])->first();
-
             if ($user) {
+
                 $userOtp = $user->hasOtp;
-                $verify_time_expire = (new Carbon($userOtp->verify_at))->addMinutes(5); // If you have verfiy your otp but do not forget the password so In forget password screen is valid for next 5 minutes after that it give expire error
-                $current_time = Carbon::now();
-                if ( !empty($userOtp) && !empty($userOtp->is_verify) && $current_time < $verify_time_expire) {
 
-                    $password = Hash::make($request->password);
+                if ( $userOtp ) {
 
-                    $user->update(['password' => $password]);
-                    $userOtp->delete();
-                    return [
-                        'message' => 'Password Change Successfully',
-                        'statusCode' => 200
-                    ];
+                    if ( !$userOtp->is_verify ) {
+                        return [
+                            'message' => 'verify the otp first',
+                            'statusCode' => 200,
+                        ];
+                    }
+
+                    $verify_time_expire = (new Carbon($userOtp->verify_at))->addMinutes(5); // If you have verfiy your otp but do not forget the password so In forget password screen is valid for next 5 minutes after that it give expire error
+                    $current_time = Carbon::now();
+                    if ( !empty($userOtp) && !empty($userOtp->is_verify) && $current_time < $verify_time_expire) {
+
+                        $password = Hash::make($request->password);
+
+                        $user->update(['password' => $password]);
+                        $userOtp->delete();
+                        return [
+                            'message' => 'Password Change Successfully',
+                            'statusCode' => 200,
+                        ];
+                    } else {
+                        return [
+                            'message' => 'Your otp verfication time have been expired .please again verify otp',
+                            'statusCode' => 200
+                        ];
+                    }
                 } else {
                     return [
-                        'message' => 'Your otp verfication time have been expired .please again verify otp',
+                        'message' => 'OTP not generated yet',
                         'statusCode' => 200
                     ];
                 }
+
             } else {
 
                 return [

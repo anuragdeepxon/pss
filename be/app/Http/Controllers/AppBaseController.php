@@ -52,12 +52,16 @@ class AppBaseController extends Controller
         ], 200);
     }
 
-    public function sendResponseWithStatus($data, $message, $status_code)
+    public function sendResponseWithStatus($data)
     {
+        $resData = !empty($data['data']) ? $data['data'] : [];
+        $message = !empty($data['message']) ? $data['message'] : '';
+        $code    = !empty($data['statusCode']) ? $data['statusCode'] : 404;
+
         return response()->json([
-            'status' => $status_code,
-            'data' => $data,
-            'message' => $message
-        ], $status_code);
+            'status' => $code,
+            'message' => $message,
+            'data' => $resData,
+        ], $code);
     }
 }
